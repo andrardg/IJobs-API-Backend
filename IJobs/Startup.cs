@@ -73,6 +73,7 @@ namespace IJobs
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IJobService, JobService>();
 
             services.AddScoped<IJWTUtils<User>, JWTUtils<User>>();
             services.AddScoped<IJWTUtils<Company>, JWTUtils<Company>>();

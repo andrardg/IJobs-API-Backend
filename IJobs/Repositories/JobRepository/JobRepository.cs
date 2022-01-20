@@ -17,6 +17,10 @@ namespace IJobs.Repositories.JobRepository
         {
 
         }
+        public List<Job> GetAll()
+        {
+            return _table.ToList();
+        }
         public List<Job> GetByJobTitle(string JobTitle)
         {
             return _table.Where(s => s.JobTitle!.ToLower().Contains(JobTitle.ToLower())).ToList();
@@ -43,6 +47,17 @@ namespace IJobs.Repositories.JobRepository
                            orderby result.Key
                            select result).ToList();
             return (IGrouping<string, Job>)results;
+        }
+        public new bool Delete(Job entity)
+        {
+            _context.Remove(entity);
+            return true;
+        }
+        public new bool Update(Job entity)
+        {
+            _context.Update(entity);
+            _table.Update(entity);
+            return true;
         }
     }
 }
