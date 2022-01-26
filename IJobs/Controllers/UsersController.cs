@@ -51,6 +51,7 @@ namespace IJobs.Controllers
         }
 
         // POST api/<UsersController>
+
         [HttpPost]
         [Route("Register")]
         public void Register([System.Web.Http.FromBody] UserRequestDTO user)

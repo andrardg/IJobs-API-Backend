@@ -56,7 +56,7 @@ namespace IJobs.Controllers
 
         // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
-        public void Delete(Guid id, [System.Web.Http.FromBody] CompanyRequestDTO company)
+        public void Delete(Guid? id)
         {
             _service.Delete(id);
             _service.Save();

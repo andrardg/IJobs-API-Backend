@@ -76,10 +76,17 @@ namespace IJobs.Services
         }
         public void Create(CompanyRequestDTO model)
         {
+            // validate
+            if (_context.Companies.Any(x => x.Email == model.Email))
+                throw new Exception("Email '" + model.Email + "' is already taken");
+
             var company = _mapper.Map<Company>(model);
+            company.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
             company.Id = Guid.NewGuid();
+            company.verifiedAccount = false;
             company.DateCreated = DateTime.UtcNow;
             company.DateModified = DateTime.UtcNow;
+
             _companyRepository.Create(company);
             Save();
         }
@@ -98,7 +105,13 @@ namespace IJobs.Services
         }
         public void Update(CompanyRequestDTO company)
         {
+            if (_context.Companies.Any(x => x.Email == company.Email && x.Id != company.Id))
+                throw new Exception("Email '" + company.Email + "' is already taken");
+
             var company2 = _mapper.Map <Company> (company);
+
+            if (_context.Companies.Any(x => x.Id == company2.Id && x.PasswordHash != company2.PasswordHash))
+                company2.PasswordHash = BCrypt.Net.BCrypt.HashPassword(company2.PasswordHash);
             _companyRepository.Update(company2);
         }
         public bool Save()

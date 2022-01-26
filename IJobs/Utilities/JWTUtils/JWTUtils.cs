@@ -15,17 +15,16 @@ namespace IJobs.Utilities.JWTUtils
 {
     public class JWTUtils<TEntity> : IJWTUtils<TEntity> where TEntity : BaseEntity
     {
-        //private readonly AppSettings _appSettings;
+        private readonly AppSettings _appSettings;
 
-        private String secret = "SecretWORD!!BeCarefulVeryVeylongPasswordOMG";//Configuration.GetSection("AppSettings:Secret").Value;
-        public JWTUtils()//IOptions<AppSettings> appSettings)
+        public JWTUtils(IOptions<AppSettings> appSettings)
         {
-            //_appSettings = appSettings.Value;
+            _appSettings = appSettings.Value;
         }
         public string GenerateJWTToken(TEntity user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var appPrivateKey = Encoding.ASCII.GetBytes(secret);// _appSettings.JwtSecret);
+            var appPrivateKey = Encoding.ASCII.GetBytes(_appSettings.JwtSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new System.Security.Claims.ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
@@ -42,7 +41,7 @@ namespace IJobs.Utilities.JWTUtils
                 return Guid.Empty;
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var appPrivateKey = Encoding.ASCII.GetBytes(secret);// _appSettings.JwtSecret);
+            var appPrivateKey = Encoding.ASCII.GetBytes(_appSettings.JwtSecret);
 
             var tokenValidationParameters = new TokenValidationParameters
             {
