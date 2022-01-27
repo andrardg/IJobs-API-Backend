@@ -84,6 +84,7 @@ namespace IJobs.Services
             company.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
             company.Id = Guid.NewGuid();
             company.verifiedAccount = false;
+            company.Role = Role.Company;
             company.DateCreated = DateTime.UtcNow;
             company.DateModified = DateTime.UtcNow;
 

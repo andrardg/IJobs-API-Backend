@@ -10,6 +10,7 @@ namespace IJobs.Services
     {
         //get all
         IEnumerable<JobDTO> GetAllJobs();
+        IEnumerable<JobDTO> GetAllJobsWithCompany();
         //get by name
         IEnumerable<JobDTO> GetByJobTitle(string title);
         JobDTO FindById(Guid? id);

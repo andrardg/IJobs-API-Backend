@@ -30,7 +30,7 @@ namespace IJobs.Controllers
         [HttpGet]
         public IEnumerable<JobDTO> Get()
         {
-            return _service.GetAllJobs();
+            return _service.GetAllJobsWithCompany();
         }
 
         // GET api/<JobsController>/5
@@ -58,7 +58,7 @@ namespace IJobs.Controllers
 
         // DELETE api/<JobsController>/5
         [HttpDelete("{id}")]
-        public void Delete(Guid id, [System.Web.Http.FromBody] JobDTO job)
+        public void Delete(Guid? id)
         {
             _service.Delete(id);
             _service.Save();

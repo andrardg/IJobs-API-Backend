@@ -10,6 +10,7 @@ namespace IJobs.Repositories.JobRepository
     public interface IJobRepository : IGenericRepository<Job>
     {
         List<Job> GetAll();
+        List<Job> GetAllWithJoin();
         List<Job> GetByJobTitle(string JobTitle);
         List<Job> GetBySalary(int Salary);
         List<Job> GetByJobType(string JobType);

@@ -13,7 +13,7 @@ namespace IJobs.Models.DTOs
         [Required]
         public string Email { get; set; }
         [Required]
-        public string Password { get; set; }
+        public string PasswordHash { get; set; }
         public Guid Id { get; set; }
 
     }

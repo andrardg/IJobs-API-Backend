@@ -29,7 +29,7 @@ namespace IJobs.Services
         {
             var user = _context.Users.FirstOrDefault(x => x.Email == model.Email);
             //validate
-            if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(model.PasswordHash, user.PasswordHash))
             {
                 throw new Exception("Username or password is incorrect");
                 //return null;
@@ -58,10 +58,12 @@ namespace IJobs.Services
             var user = _mapper.Map<User>(model);
 
             // hash password
-            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
 
+            user.Role = Role.User;
             // save user
             Create(user);
+            Save();
         }
         public void ValidateUpdate(Guid? id, string email)
         {
@@ -82,8 +84,8 @@ namespace IJobs.Services
             user.Id = (Guid)id;
 
             // hash password if it was entered
-            if (!string.IsNullOrEmpty(model.Password))
-                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+            if (!string.IsNullOrEmpty(model.PasswordHash))
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
 
             // copy model to user and save
             _userRepository.Update(user);
@@ -91,8 +93,6 @@ namespace IJobs.Services
         public IEnumerable<UserResponseDTO> GetAllUsers()
         {
             var results = _userRepository.GetAllWithEmploymentInclude();
-            //return (IEnumerable<User>)results;
-            
             var dtos = new List<UserResponseDTO>();
             foreach (var result in results)
             {

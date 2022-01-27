@@ -69,7 +69,7 @@ namespace IJobs.Controllers
 
         // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]
-        public void Delete(Guid id, [System.Web.Http.FromBody] UserRequestDTO user)
+        public void Delete(Guid? id)
         {
             _service.Delete(id);
             _service.Save();

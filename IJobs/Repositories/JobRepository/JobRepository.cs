@@ -21,6 +21,12 @@ namespace IJobs.Repositories.JobRepository
         {
             return _table.ToList();
         }
+        public List<Job> GetAllWithJoin()
+        {
+            var result = _table.Join(_context.Companies, j => j.CompanyId, c => c.Id,
+               (j, c) => new {j, c }).Select(obj => obj.j);
+            return result.ToList();
+        }
         public List<Job> GetByJobTitle(string JobTitle)
         {
             return _table.Where(s => s.JobTitle!.ToLower().Contains(JobTitle.ToLower())).ToList();
