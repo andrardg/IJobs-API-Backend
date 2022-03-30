@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using IJobs.Models.DTOs;
 using IJobs.Services;
+using IJobs.Utilities;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +20,12 @@ namespace IJobs.Controllers
     {
         private readonly ICompanyService _service;
         private readonly IMapper _mapper;
-        public CompaniesController(ICompanyService service, IMapper mapper)
+        private readonly AppSettings _appSettings;
+        public CompaniesController(ICompanyService service, IMapper mapper, IOptions<AppSettings> appSettings)
         {
             _service = service;
             _mapper = mapper;
+            _appSettings = appSettings.Value;
         }
         // GET: api/<ValuesController>
         [HttpGet]
@@ -35,22 +39,30 @@ namespace IJobs.Controllers
         [HttpGet("{id}")]
         public CompanyResponseDTO Get(Guid? id)
         {
-            return _service.FindById(id);
+            return _service.GetById(id);
         }
 
-        // POST api/<ValuesController>
         [HttpPost]
-        public void Post([System.Web.Http.FromBody] CompanyRequestDTO company)
+        [Route("Login")]
+        public CompanyResponseDTO Login([System.Web.Http.FromBody] CompanyRequestDTO company)
         {
-            _service.Create(company);
+            return _service.Authenticate(company);
+        }
+
+        // POST api/<CompaniesController>
+
+        [HttpPost]
+        [Route("Register")]
+        public void Register([System.Web.Http.FromBody] CompanyRequestDTO company)
+        {
+            _service.Register(company);
         }
 
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]
-        public void Put(Guid id, [System.Web.Http.FromBody] CompanyRequestDTO company)
+        public void Put(Guid? id, [System.Web.Http.FromBody] CompanyRequestDTO company)
         {
-            company.Id = id;
-            _service.Update(company);
+            _service.Update(id, company);
             _service.Save();
         }
 

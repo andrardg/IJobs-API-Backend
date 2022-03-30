@@ -82,13 +82,13 @@ namespace IJobs.Repositories.GenericRepository
 
 
         //find
-        public TEntity FindById(object id)
+        public TEntity GetById(object id)
         {
             return _table.Find(id);
             //return _table.FirstOrDefault(x => x.Id.Equals(id));
         }
 
-        public async Task<TEntity> FindByIdAsinc(object id)
+        public async Task<TEntity> GetByIdAsinc(object id)
         {
             return await _table.FindAsync(id);
             //return await _table.FirstOrDefaultAsync(x => x.Id.Equals(id));

@@ -35,13 +35,13 @@ namespace IJobs.Services
 
         public void Delete(Guid? id)
         {
-            var job = _jobRepository.FindById(id);
+            var job = _jobRepository.GetById(id);
             _jobRepository.Delete(job);
         }
 
-        public JobDTO FindById(Guid? id)
+        public JobDTO GetById(Guid? id)
         {
-            var result = _jobRepository.FindById(id);
+            var result = _jobRepository.GetById(id);
             var job = _mapper.Map<JobDTO>(result);
             return job;
         }

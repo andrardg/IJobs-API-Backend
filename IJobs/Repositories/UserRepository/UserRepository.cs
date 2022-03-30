@@ -54,7 +54,7 @@ namespace IJobs.Repositories.UserRepository
         public new bool Update(User entity)
         {
             _context.Update(entity);
-            //_table.Update(entity);
+            _table.Update(entity);
             return true;
         }
     }

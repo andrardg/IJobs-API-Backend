@@ -28,16 +28,15 @@ namespace IJobs.Services
         public UserResponseDTO Authenticate(UserRequestDTO model)
         {
             var user = _context.Users.FirstOrDefault(x => x.Email == model.Email);
-            //validate
-            if (user == null || !BCrypt.Net.BCrypt.Verify(model.PasswordHash, user.PasswordHash))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
             {
-                throw new Exception("Username or password is incorrect");
-                //return null;
+                throw new Exception("Email or password is incorrect");
             }
             //auth successful
             var response = _mapper.Map<UserResponseDTO>(user);
             //JWT generation (JSON WEB TOKEN)
-            response.Token = _ijwtUtils.GenerateJWTToken(user);
+            response.Token = _ijwtUtils.GenerateJWTToken(user, user.Role);
+            Console.Write(response.Token);
             return response;
         }
         public void Create(User user)
@@ -58,7 +57,7 @@ namespace IJobs.Services
             var user = _mapper.Map<User>(model);
 
             // hash password
-            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
 
             user.Role = Role.User;
             // save user
@@ -84,8 +83,8 @@ namespace IJobs.Services
             user.Id = (Guid)id;
 
             // hash password if it was entered
-            if (!string.IsNullOrEmpty(model.PasswordHash))
-                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
+            if (!string.IsNullOrEmpty(model.Password))
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
 
             // copy model to user and save
             _userRepository.Update(user);
@@ -101,27 +100,21 @@ namespace IJobs.Services
             }
             return dtos;
         }
-
-        
-
         public UserResponseDTO GetById(Guid? id)
         {
-            var user = _userRepository.FindById(id);
+            var user = _userRepository.GetById(id);
             if (user == null) 
                 throw new KeyNotFoundException("User not found");
             var response = _mapper.Map<UserResponseDTO>(user);
             return response;
         }
-
-        public async Task<UserResponseDTO> FindByIdAsinc(Guid? id)
+        public async Task<UserResponseDTO> GetByIdAsinc(Guid? id)
         {
-            var user = await _userRepository.FindByIdAsinc(id);
+            var user = await _userRepository.GetByIdAsinc(id);
             if (user == null)
                 throw new KeyNotFoundException("User not found");
-
             var response = _mapper.Map<UserResponseDTO>(user);
             return response;
-            //return await _table.FirstOrDefaultAsync(x => x.Id.Equals(id));
         }
         public bool Save()
         {
@@ -149,7 +142,7 @@ namespace IJobs.Services
         }
         public void Delete(Guid? id)
         {
-            var user = _userRepository.FindById(id);
+            var user = _userRepository.GetById(id);
             _userRepository.Delete(user);
         }
     }

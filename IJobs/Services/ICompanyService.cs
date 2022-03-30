@@ -9,18 +9,16 @@ namespace IJobs.Services
 {
     public interface ICompanyService
     {
-        //ModelResultDTO GetDataMappedByTitle(string title);
         CompanyResponseDTO Authenticate(CompanyRequestDTO model);
-        //get all
-        IEnumerable<CompanyResponseDTO> GetAllCompanies();
-        //get by name
+        void Register(CompanyRequestDTO model);
+        void Create(Company company);
+        void Update(Guid? id, CompanyRequestDTO company);
+        IEnumerable<CompanyResponseDTO> GetAllCompanies(); 
+        IEnumerable<CompanyResponseDTO> GetByEmail(string email);
         IEnumerable<CompanyResponseDTO> GetByTitle(string title);
-        //get by name including jobs
         IEnumerable<CompanyResponseDTO> GetByTitleIncludingJobs(string title);
-        void Create(CompanyRequestDTO company);
-        CompanyResponseDTO FindById(Guid? id);
-        Task<CompanyResponseDTO> FindByIdAsinc(Guid? id);
-        void Update(CompanyRequestDTO company);
+        CompanyResponseDTO GetById(Guid? id);
+        Task<CompanyResponseDTO> GetByIdAsinc(Guid? id);
         Task<bool> SaveAsync();
         bool Save();
         void Delete(Guid? id);

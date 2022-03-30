@@ -12,7 +12,7 @@ namespace IJobs.Models.DTOs
         [Required]
         public string Email { get; set; }
         [Required]
-        public string PasswordHash { get; set; }
+        public string Password { get; set; }
         public string Address { get; set; }
         public string Description { get; set; }
         public bool verifiedAccount { get; set; }

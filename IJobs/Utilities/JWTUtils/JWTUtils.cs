@@ -21,13 +21,16 @@ namespace IJobs.Utilities.JWTUtils
         {
             _appSettings = appSettings.Value;
         }
-        public string GenerateJWTToken(TEntity user)
+        public string GenerateJWTToken(TEntity user, Role role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var appPrivateKey = Encoding.ASCII.GetBytes(_appSettings.JwtSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new System.Security.Claims.ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+                Subject = new System.Security.Claims.ClaimsIdentity(new[] { 
+                    new Claim("id", user.Id.ToString()),
+                    new Claim("role", role.ToString())
+                }),
                 Expires = DateTime.UtcNow.AddDays(10),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(appPrivateKey),SecurityAlgorithms.HmacSha256Signature)
             };

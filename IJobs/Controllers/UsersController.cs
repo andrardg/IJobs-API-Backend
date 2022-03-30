@@ -9,11 +9,13 @@ using Microsoft.Extensions.Options;
 using IJobs.Models.DTOs;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace IJobs.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -29,6 +31,8 @@ namespace IJobs.Controllers
         }
         // GET: api/<UsersController>
         [HttpGet]
+        //[AllowAnonymous]
+        [Authorize(Roles = "0")]
         //[EnableCors]//("AllowOrigin")]
         public IEnumerable<UserResponseDTO> Get()
         {
@@ -42,7 +46,7 @@ namespace IJobs.Controllers
         {
             return _service.GetById(id);
         }
-
+        [AllowAnonymous]
         [HttpPost]
         [Route("Login")]
         public UserResponseDTO Login([System.Web.Http.FromBody] UserRequestDTO user)
@@ -51,7 +55,7 @@ namespace IJobs.Controllers
         }
 
         // POST api/<UsersController>
-
+        [AllowAnonymous]
         [HttpPost]
         [Route("Register")]
         public void Register([System.Web.Http.FromBody] UserRequestDTO user)

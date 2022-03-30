@@ -37,7 +37,7 @@ namespace IJobs.Controllers
         [HttpGet("{id}")]
         public JobDTO Get(Guid id)
         {
-            return _service.FindById(id);
+            return _service.GetById(id);
         }
 
         // POST api/<JobsController>

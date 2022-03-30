@@ -9,17 +9,13 @@ namespace IJobs.Services
 {
     public interface IUserService
     {
-        //autentificare
         UserResponseDTO Authenticate(UserRequestDTO model);
         void Register(UserRequestDTO model);
-        void Update(Guid? id, UserRequestDTO model);
-        //get all
-        IEnumerable<UserResponseDTO> GetAllUsers();
-        //get by id
-        UserResponseDTO GetById(Guid? id);
-
         void Create(User user);
-        Task<UserResponseDTO> FindByIdAsinc(Guid? id);
+        void Update(Guid? id, UserRequestDTO model);
+        IEnumerable<UserResponseDTO> GetAllUsers();
+        UserResponseDTO GetById(Guid? id);
+        Task<UserResponseDTO> GetByIdAsinc(Guid? id);
         Task<bool> SaveAsync();
         bool Save();
         void Delete(Guid? id);

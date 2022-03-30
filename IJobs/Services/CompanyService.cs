@@ -31,15 +31,66 @@ namespace IJobs.Services
         public CompanyResponseDTO Authenticate(CompanyRequestDTO model)
         {
             var company = _context.Companies.FirstOrDefault(x => x.Email == model.Email);
-            if (company == null || BCrypt.Net.BCrypt.Verify(model.PasswordHash, company.PasswordHash))
+            if (company == null || BCrypt.Net.BCrypt.Verify(model.Password, company.PasswordHash))
             {
-                return null;
+                throw new Exception("Email or password is incorrect");
             }
+            //auth successful
+            var response = _mapper.Map<CompanyResponseDTO>(company);
             //JWT generation (JSON WEB TOKEN)
-            var jwtToken = _ijwtUtils.GenerateJWTToken(company);
-            return new CompanyResponseDTO(company, jwtToken);
+            response.Token = _ijwtUtils.GenerateJWTToken(company, company.Role);
+            return response;
         }
+        public void Create(Company company)
+        {
+            company.Id = Guid.NewGuid();
+            company.DateCreated = DateTime.UtcNow;
+            company.DateModified = DateTime.UtcNow;
+            _companyRepository.Create(company);
+            Save();
+        }
+        public void Register(CompanyRequestDTO model)
+        {
+            // validate
+            if (_context.Companies.Any(x => x.Email == model.Email))
+                throw new Exception("Email '" + model.Email + "' is already taken");
 
+            // map model to new company object
+            var company = _mapper.Map<Company>(model);
+
+            // hash password
+            company.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+
+            company.Role = Role.User;
+            // save company
+            Create(company);
+            Save();
+        }
+        public void ValidateUpdate(Guid? id, string email)
+        {
+            var emailBefore = GetById(id).Email;
+            var newEmailExists = _companyRepository.EmailExists(email);
+
+            // validate
+            if (emailBefore != email && newEmailExists != null)
+                throw new Exception("Email '" + email + "' is already taken");
+
+        }
+        public void Update(Guid? id, CompanyRequestDTO model)
+        {
+
+            //ValidateUpdate(id, model.Email);
+
+            var company = _mapper.Map<Company>(model); // the new one
+            company.Id = (Guid)id;
+
+            // hash password if it was entered
+            if (!string.IsNullOrEmpty(model.Password))
+                company.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+
+            // copy model to company and save
+            _companyRepository.Update(company);
+        }
         public IEnumerable<CompanyResponseDTO> GetAllCompanies()
         {
             var results = _companyRepository.GetAllWithInclude();
@@ -51,7 +102,17 @@ namespace IJobs.Services
             }
             return dtos;
         }
-
+        public IEnumerable<CompanyResponseDTO> GetByEmail(string email)
+        {
+            var results = _companyRepository.GetByEmail(email);
+            var dtos = new List<CompanyResponseDTO>();
+            foreach (var result in results)
+            {
+                var response = _mapper.Map<CompanyResponseDTO>(result);
+                dtos.Add(response);
+            }
+            return dtos;
+        }
         public IEnumerable<CompanyResponseDTO> GetByTitle(string title)
         {
             var results = _companyRepository.GetByTitle(title);
@@ -74,46 +135,22 @@ namespace IJobs.Services
             }
             return dtos;
         }
-        public void Create(CompanyRequestDTO model)
+        public CompanyResponseDTO GetById(Guid? id)
         {
-            // validate
-            if (_context.Companies.Any(x => x.Email == model.Email))
-                throw new Exception("Email '" + model.Email + "' is already taken");
-
-            var company = _mapper.Map<Company>(model);
-            company.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
-            company.Id = Guid.NewGuid();
-            company.verifiedAccount = false;
-            company.Role = Role.Company;
-            company.DateCreated = DateTime.UtcNow;
-            company.DateModified = DateTime.UtcNow;
-
-            _companyRepository.Create(company);
-            Save();
-        }
-        public CompanyResponseDTO FindById(Guid? id)
-        {
-            var result =  _companyRepository.FindById(id);
+            var result =  _companyRepository.GetById(id); 
+            if (result == null)
+                throw new KeyNotFoundException("Company not found");
             var company = _mapper.Map<CompanyResponseDTO>(result);
             return company;
         }
 
-        public async Task<CompanyResponseDTO> FindByIdAsinc(Guid? id)
+        public async Task<CompanyResponseDTO> GetByIdAsinc(Guid? id)
         {
-            var result =  await _companyRepository.FindByIdAsinc(id);
+            var result =  await _companyRepository.GetByIdAsinc(id);
+            if (result == null)
+                throw new KeyNotFoundException("Company not found");
             var company = _mapper.Map<CompanyResponseDTO>(result);
             return company;
-        }
-        public void Update(CompanyRequestDTO company)
-        {
-            if (_context.Companies.Any(x => x.Email == company.Email && x.Id != company.Id))
-                throw new Exception("Email '" + company.Email + "' is already taken");
-
-            var company2 = _mapper.Map <Company> (company);
-
-            if (_context.Companies.Any(x => x.Id == company2.Id && x.PasswordHash != company2.PasswordHash))
-                company2.PasswordHash = BCrypt.Net.BCrypt.HashPassword(company2.PasswordHash);
-            _companyRepository.Update(company2);
         }
         public bool Save()
         {
@@ -141,7 +178,7 @@ namespace IJobs.Services
         }
         public void Delete(Guid? id)
         {
-            var company = _companyRepository.FindById(id);
+            var company = _companyRepository.GetById(id);
             _companyRepository.Delete(company);
         }
 

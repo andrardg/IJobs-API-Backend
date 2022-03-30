@@ -9,7 +9,7 @@ namespace IJobs.Utilities.JWTUtils
 {
     public interface IJWTUtils<TEntity> where TEntity : BaseEntity
     {
-        public string GenerateJWTToken(TEntity user);
+        public string GenerateJWTToken(TEntity user, Role role);
         public Guid ValidateJWTToken(string token);
     }
 }

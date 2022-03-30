@@ -12,7 +12,6 @@ namespace IJobs.Repositories.GenericRepository
         Task<List<TEntity>> GetAll();
         IQueryable<TEntity> GetAllAsQueryable();
 
-
         //create
         void Create(TEntity entity);
         Task CreateAsync(TEntity entity);
@@ -30,8 +29,8 @@ namespace IJobs.Repositories.GenericRepository
 
 
         // Find
-        TEntity FindById(object id);
-        Task<TEntity> FindByIdAsinc(object id);
+        TEntity GetById(object id);
+        Task<TEntity> GetByIdAsinc(object id);
 
 
         // Save
