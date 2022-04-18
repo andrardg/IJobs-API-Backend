@@ -20,6 +20,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Security.Claims;
 using System.Text;
 
 namespace IJobs
@@ -42,13 +44,21 @@ namespace IJobs
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            //services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
+ 
+            services.AddAuthorization(config => {
+                config.AddPolicy("0",
+                    options => options.RequireClaim(ClaimTypes.Role));
+            });
 
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //        .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => Configuration.Bind("JwtSettings", options))
-            //        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => Configuration.Bind("CookieSettings", options));
-
-            services.AddAuthorization();
+            var jwtAppSettingOptions = Configuration.GetSection(nameof(AppSettings));
+            services.Configure<AppSettings>(options =>
+            {
+                options.Issuer = jwtAppSettingOptions[nameof(AppSettings.Issuer)];
+                options.Audience = jwtAppSettingOptions[nameof(AppSettings.Audience)];
+                options.SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["AppSettings:JwtSecret"])), SecurityAlgorithms.HmacSha256);
+            });
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -59,13 +69,15 @@ namespace IJobs
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
+                    ValidIssuer = jwtAppSettingOptions[nameof(AppSettings.Issuer)],
                     ValidateAudience = true,
+                    ValidAudience = jwtAppSettingOptions[nameof(AppSettings.Audience)],
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = Configuration["AppSettings:Issuer"],
-                    ValidAudience = Configuration["AppSettings:Issuer"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["AppSettings:JwtSecret"]))
                 };
+                options.ClaimsIssuer = jwtAppSettingOptions[nameof(AppSettings.Issuer)];
+                options.SaveToken = true;
             });
 
             services.AddControllersWithViews();
@@ -92,12 +104,7 @@ namespace IJobs
 
             services.AddScoped<IJWTUtils<User>, JWTUtils<User>>();
             services.AddScoped<IJWTUtils<Company>, JWTUtils<Company>>();
-            //services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
-            //// In production, the Angular files will be served from this directory
-            //services.AddSpaStaticFiles(configuration =>
-            //{
-            //    configuration.RootPath = "ClientApp/dist";
-            //});
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

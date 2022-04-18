@@ -23,19 +23,23 @@ namespace IJobs.Utilities.JWTUtils
         }
         public string GenerateJWTToken(TEntity user, Role role)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var appPrivateKey = Encoding.ASCII.GetBytes(_appSettings.JwtSecret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new System.Security.Claims.ClaimsIdentity(new[] { 
-                    new Claim("id", user.Id.ToString()),
-                    new Claim("role", role.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddDays(10),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(appPrivateKey),SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+
+            var claims = new[]{
+                 new Claim("id", user.Id.ToString()),
+                 new Claim("role", role.ToString())
+             };
+
+            // Create the JWT security token and encode it.
+            var jwt = new JwtSecurityToken(
+                issuer: _appSettings.Issuer,
+                audience: _appSettings.Audience,
+                claims: claims,
+                notBefore: _appSettings.NotBefore,
+                expires: _appSettings.Expiration,
+                signingCredentials: _appSettings.SigningCredentials);
+
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+            return encodedJwt;
         }
 
         public Guid ValidateJWTToken(string token)
