@@ -31,7 +31,7 @@ namespace IJobs.Services
         public CompanyResponseDTO Authenticate(CompanyRequestDTO model)
         {
             var company = _context.Companies.FirstOrDefault(x => x.Email == model.Email);
-            if (company == null || BCrypt.Net.BCrypt.Verify(model.Password, company.PasswordHash))
+            if (company == null || !BCrypt.Net.BCrypt.Verify(model.Password, company.PasswordHash))
             {
                 throw new Exception("Email or password is incorrect");
             }

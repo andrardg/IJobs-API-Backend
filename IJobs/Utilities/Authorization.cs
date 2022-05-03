@@ -20,7 +20,7 @@ namespace IJobs.Utilities
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             var unauthorizedStatusCodeObject = new Microsoft.AspNetCore.Mvc.JsonResult(new { Message = "Unauthorized!" }) { StatusCode = StatusCodes.Status401Unauthorized };
-            Console.Write(_roles);
+            
             if (_roles == null)
             {
                 context.Result = unauthorizedStatusCodeObject;
@@ -31,22 +31,12 @@ namespace IJobs.Utilities
                 return;
 
             var user = (User)context.HttpContext.Items["User"];
-            Console.Write(user);
-            Console.Write((User)context.HttpContext.Items["user"]);
             var company = (Company)context.HttpContext.Items["Company"];
             var admin = context.HttpContext.Items["Admin"];
             if(user == null && company == null && admin == null)
             {
                 context.Result = unauthorizedStatusCodeObject;
             }
-            //if ( user == null || ! _roles.Contains(user.Role))
-            //{
-            //    context.Result = unauthorizedStatusCodeObject;
-            //}
-            //if (company == null || !_roles.Contains(company.Role))
-            //{
-            //    context.Result = unauthorizedStatusCodeObject;
-            //}
 
         }
     }

@@ -16,18 +16,22 @@ namespace IJobs.Utilities
         {
             _next = next;
         }
-        public async Task Invoke(HttpContext httpContext, IUserService userService, IJWTUtils<TEntity> ijwtUtils)
+        public async Task Invoke(HttpContext httpContext, IUserService userService, ICompanyService companyService, IJWTUtils<TEntity> ijwtUtils)
         {
             var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split("").Last();
-            var userId = ijwtUtils.ValidateJWTToken(token);
+            var id = ijwtUtils.ValidateJWTToken(token);
 
-            if(userId != Guid.Empty)
+            if(id != Guid.Empty)
             {
-                var user = userService.GetById(userId);
+                var user = userService.GetById(id);
                 if( user.Role.Equals("User"))
                     httpContext.Items["User"] = user;
                 else if (user.Role.Equals("Admin"))
                     httpContext.Items["Admin"] = user;
+
+                var company = companyService.GetById(id);
+                if (company.Role.Equals("Company"))
+                    httpContext.Items["Company"] = company;
             }
             await _next(httpContext);
         }

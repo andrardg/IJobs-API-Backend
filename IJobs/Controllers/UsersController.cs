@@ -32,9 +32,7 @@ namespace IJobs.Controllers
         }
         // GET: api/<UsersController>
         [HttpGet]
-        //[AllowAnonymous]
-        [Authorize(Roles = nameof(Role.Admin))]
-        //[Authorize(Policy = "admin")]
+        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company) + ", " + nameof(Role.User))]
         public IEnumerable<UserResponseDTO> Get()
         {
             return _service.GetAllUsers();
@@ -42,22 +40,25 @@ namespace IJobs.Controllers
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
+        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company) + ", " + nameof(Role.User))]
         public UserResponseDTO Get(Guid? id)
         {
             return _service.GetById(id);
         }
-        [AllowAnonymous]
+
+        // POST api/<UsersController>/login
         [HttpPost]
         [Route("Login")]
+        [AllowAnonymous]
         public UserResponseDTO Login([System.Web.Http.FromBody] UserRequestDTO user)
         {
             return _service.Authenticate(user);
         }
 
-        // POST api/<UsersController>
-        [AllowAnonymous]
+        // POST api/<UsersController>/register
         [HttpPost]
         [Route("Register")]
+        [AllowAnonymous]
         public void Register([System.Web.Http.FromBody] UserRequestDTO user)
         {
             _service.Register(user);
@@ -65,6 +66,7 @@ namespace IJobs.Controllers
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
+        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.User))]
         public void Put(Guid id, [System.Web.Http.FromBody] UserRequestDTO user)
         {
             _service.Update(id, user);
@@ -73,6 +75,7 @@ namespace IJobs.Controllers
 
         // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.User))]
         public void Delete(Guid? id)
         {
             _service.Delete(id);

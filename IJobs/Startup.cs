@@ -44,12 +44,17 @@ namespace IJobs
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            //services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
             services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
- 
-            services.AddAuthorization(config => {
+
+            services.AddAuthorization(config =>
+            {
                 config.AddPolicy("0",
                     options => options.RequireClaim(ClaimTypes.Role));
+                config.AddPolicy("1",
+                    options => options.RequireClaim(ClaimTypes.Role)); 
+                config.AddPolicy("2",
+                     options => options.RequireClaim(ClaimTypes.Role));
             });
 
             var jwtAppSettingOptions = Configuration.GetSection(nameof(AppSettings));
@@ -137,26 +142,18 @@ namespace IJobs
             app.UseRouting();
 
             app.UseAuthentication();
-            //app.UseIdentityServer();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllerRoute(
-            //        name: "default",
-            //        pattern: "{controller = Home}/{action=Index}/{id?}");
-            //    endpoints.MapRazorPages();
-            //});
+
 
             app.UseMiddleware<ErrorHandlerMiddleware>();
 
             // custom jwt auth middleware
             app.UseMiddleware<JWTMiddleware<User>>();
-
 
             //app.UseSpa(spa =>
             //{

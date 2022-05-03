@@ -2,6 +2,7 @@
 using IJobs.Models.DTOs;
 using IJobs.Services;
 using IJobs.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
@@ -15,6 +16,7 @@ namespace IJobs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class JobsController : ControllerBase
     {
         private readonly IJobService _service;
@@ -28,6 +30,7 @@ namespace IJobs.Controllers
 
         // GET: api/<JobsController>
         [HttpGet]
+        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company) + ", " + nameof(Role.User))]
         public IEnumerable<JobDTO> Get()
         {
             return _service.GetAllJobsWithCompany();
@@ -35,6 +38,7 @@ namespace IJobs.Controllers
 
         // GET api/<JobsController>/5
         [HttpGet("{id}")]
+        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company) + ", " + nameof(Role.User))]
         public JobDTO Get(Guid id)
         {
             return _service.GetById(id);
@@ -42,6 +46,7 @@ namespace IJobs.Controllers
 
         // POST api/<JobsController>
         [HttpPost]
+        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company))]
         public void Post([System.Web.Http.FromBody] JobDTO job)
         {
             _service.Create(job);
@@ -49,6 +54,7 @@ namespace IJobs.Controllers
 
         // PUT api/<JobsController>/5
         [HttpPut("{id}")]
+        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company))]
         public void Put(Guid id, [System.Web.Http.FromBody] JobDTO job)
         {
             job.Id = id;
@@ -58,6 +64,7 @@ namespace IJobs.Controllers
 
         // DELETE api/<JobsController>/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company))]
         public void Delete(Guid? id)
         {
             _service.Delete(id);
