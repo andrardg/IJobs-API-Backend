@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IJobs.Models;
 using IJobs.Models.DTOs;
 using IJobs.Services;
 using IJobs.Utilities;
@@ -30,7 +31,7 @@ namespace IJobs.Controllers
 
         // GET: api/<JobsController>
         [HttpGet]
-        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company) + ", " + nameof(Role.User))]
+        [AllowAnonymous]
         public IEnumerable<JobDTO> Get()
         {
             return _service.GetAllJobsWithCompany();
@@ -38,7 +39,7 @@ namespace IJobs.Controllers
 
         // GET api/<JobsController>/5
         [HttpGet("{id}")]
-        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company) + ", " + nameof(Role.User))]
+        [AllowAnonymous]
         public JobDTO Get(Guid id)
         {
             return _service.GetById(id);

@@ -8,6 +8,7 @@ namespace IJobs.Models.DTOs
 {
     public class CompanyRequestDTO
     {
+        [Required]
         public string Name { get; set; }
         [Required]
         public string Email { get; set; }

@@ -32,7 +32,7 @@ namespace IJobs.Controllers
         }
         // GET: api/<ValuesController>
         [HttpGet]
-        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company) + ", " + nameof(Role.User))]
+        [AllowAnonymous]
         public IEnumerable<CompanyResponseDTO> Get()
         {
             return _service.GetAllCompanies();
@@ -40,7 +40,7 @@ namespace IJobs.Controllers
 
         // GET api/<ValuesController>/5
         [HttpGet("{id}")]
-        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company) + ", " + nameof(Role.User))]
+        [AllowAnonymous]
         public CompanyResponseDTO Get(Guid? id)
         {
             return _service.GetById(id);

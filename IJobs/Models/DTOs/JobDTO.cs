@@ -10,10 +10,13 @@ namespace IJobs.Models.DTOs
     {
         [Required]
         public string JobTitle { get; set; }
+        [Required]
         public string Description { get; set; }
         [Required]
         public int Salary { get; set; }
+        [Required]
         public string JobType { get; set; }
+        [Required]
         public string Experience { get; set; }
         public bool Open { get; set; }
         public Guid Id { get; set; }
