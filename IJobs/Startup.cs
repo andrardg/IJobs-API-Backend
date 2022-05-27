@@ -84,7 +84,9 @@ namespace IJobs
                 options.ClaimsIssuer = jwtAppSettingOptions[nameof(AppSettings.Issuer)];
                 options.SaveToken = true;
             });
-
+            services.AddControllers().AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddControllersWithViews();
             services.AddRazorPages();
 
