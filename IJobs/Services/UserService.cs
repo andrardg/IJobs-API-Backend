@@ -64,20 +64,13 @@ namespace IJobs.Services
             Create(user);
             Save();
         }
-        public void ValidateUpdate(Guid? id, string email)
-        {
-            var emailBefore = GetById(id).Email;
-            var newEmailExists = _userRepository.EmailExists(email);
-
-            // validate
-            if (emailBefore != email && newEmailExists != null)
-                throw new Exception("Email '" + email + "' is already taken");
-
-        }
         public void Update(Guid? id, UserRequestDTO model)
         {
-            
-            //ValidateUpdate(id, model.Email);
+
+            if (_context.Companies.Any(x => x.Email == model.Email))
+                throw new Exception("Email '" + model.Email + "' is already taken");
+            if (_context.Users.Any(x => x.Email == model.Email))
+                throw new Exception("Email '" + model.Email + "' is already taken");
 
             var user = _mapper.Map<User>(model); // the new one
             user.Id = (Guid)id;

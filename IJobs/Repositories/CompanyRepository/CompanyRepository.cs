@@ -14,6 +14,28 @@ namespace IJobs.Repositories.CompanyRepository
         public CompanyRepository(projectContext context) : base(context)
         {
         }
+        public Company GetByIdWithJobs(Guid? id)
+        {
+            var result1 = _table.Find(id);
+            var result2 = from company in _table
+                          join job in _context.Jobs on company.Id equals job.CompanyId
+                          into resultGroup
+                          from result in resultGroup.DefaultIfEmpty()
+                          where company.Id == id
+                          select new Company
+                          {
+                              Name = company.Name,
+                              Email = company.Email,
+                              PasswordHash = company.PasswordHash,
+                              Address = company.Address,
+                              Description = company.Description,
+                              Role = company.Role,
+                              verifiedAccount = company.verifiedAccount,
+                              Jobs = company.Jobs,
+                              Id = company.Id
+                          };
+            return result2.FirstOrDefault();
+        }
         public List<Company> GetByEmail(string email)
         {
             return _table.Where(s => s.Email!.ToLower().Contains(email.ToLower())).ToList();

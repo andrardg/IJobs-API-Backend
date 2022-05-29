@@ -11,6 +11,7 @@ namespace IJobs.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        [StringLength(200)]
         public string Email { get; set; }
         [JsonIgnore]
         public string PasswordHash { get; set; }

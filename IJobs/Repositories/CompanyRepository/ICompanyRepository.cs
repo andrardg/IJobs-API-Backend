@@ -9,6 +9,7 @@ namespace IJobs.Repositories.CompanyRepository
 {
     public interface ICompanyRepository : IGenericRepository<Company>
     {
+        Company GetByIdWithJobs(Guid? id);
         List<Company> GetByEmail(string email);
         List<Company> GetByTitle(string title);
         List<Company> GetByTitleIncludingJobs(string title);

@@ -16,6 +16,7 @@ namespace IJobs.Models.DTOs
         public Role Role { get; set; }
         public bool verifiedAccount { get; set; }
         public string Token { get; set; }
+        public ICollection<Job> Jobs { get; set; } //one to many between job and company
         public CompanyResponseDTO() { }
         public CompanyResponseDTO(Company company, string token)
         {
@@ -28,6 +29,7 @@ namespace IJobs.Models.DTOs
             Role = company.Role;
             verifiedAccount = company.verifiedAccount;
             Token = token;
+            Jobs = company.Jobs;
         }
     }
 }

@@ -66,27 +66,20 @@ namespace IJobs.Services
             Create(company);
             Save();
         }
-        public void ValidateUpdate(Guid? id, string email)
-        {
-            var emailBefore = GetById(id).Email;
-            var newEmailExists = _companyRepository.EmailExists(email);
-
-            // validate
-            if (emailBefore != email && newEmailExists != null)
-                throw new Exception("Email '" + email + "' is already taken");
-
-        }
         public void Update(Guid? id, CompanyRequestDTO model)
         {
-
-            //ValidateUpdate(id, model.Email);
-
+            if (_context.Companies.Any(x => x.Email == model.Email))
+                throw new Exception("Email '" + model.Email + "' is already taken");
+            if (_context.Users.Any(x => x.Email == model.Email))
+                throw new Exception("Email '" + model.Email + "' is already taken");
             var company = _mapper.Map<Company>(model); // the new one
             company.Id = (Guid)id;
 
-            // hash password if it was entered
-            if (!string.IsNullOrEmpty(model.Password))
+            // if the new object has a saved password other than the old hash
+            if (!model.Password.Equals(model.oldPasswordHash))
                 company.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+            else
+                company.PasswordHash = model.oldPasswordHash;
 
             // copy model to company and save
             _companyRepository.Update(company);
@@ -137,7 +130,8 @@ namespace IJobs.Services
         }
         public CompanyResponseDTO GetById(Guid? id)
         {
-            var result =  _companyRepository.GetById(id); 
+            //var result =  _companyRepository.GetById(id); 
+            var result = _companyRepository.GetByIdWithJobs(id);
             if (result == null)
                 throw new KeyNotFoundException("Company not found");
             var company = _mapper.Map<CompanyResponseDTO>(result);

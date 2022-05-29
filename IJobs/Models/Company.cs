@@ -11,6 +11,7 @@ namespace IJobs.Models
     public class Company : Base.BaseEntity
     {
         public string Name { get; set; }
+        [StringLength(200)]
         public string Email { get; set; }
         [JsonIgnore]
         public string PasswordHash { get; set; }

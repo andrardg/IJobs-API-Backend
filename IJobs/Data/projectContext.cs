@@ -19,6 +19,8 @@ namespace IJobs.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Company>().HasIndex(x => x.Email).IsUnique();
+            modelBuilder.Entity<User>().HasIndex(x => x.Email).IsUnique();
             //one to many
             modelBuilder.Entity<Company>()
                 .HasMany(c => c.Jobs)
