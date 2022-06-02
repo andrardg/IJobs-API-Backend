@@ -68,9 +68,9 @@ namespace IJobs.Services
         }
         public void Update(Guid? id, CompanyRequestDTO model)
         {
-            if (_context.Companies.Any(x => x.Email == model.Email))
+            if (_context.Companies.Any(x => x.Email == model.Email && x.Id != id))
                 throw new Exception("Email '" + model.Email + "' is already taken");
-            if (_context.Users.Any(x => x.Email == model.Email))
+            if (_context.Users.Any(x => x.Email == model.Email && x.Id != id))
                 throw new Exception("Email '" + model.Email + "' is already taken");
             var company = _mapper.Map<Company>(model); // the new one
             company.Id = (Guid)id;

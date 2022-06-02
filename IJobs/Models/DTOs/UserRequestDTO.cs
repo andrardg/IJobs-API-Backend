@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,6 +16,11 @@ namespace IJobs.Models.DTOs
         [Required]
         public string Password { get; set; }
         public string oldPasswordHash { get; set; }
+        public string Residence { get; set; }
+        public string Occupation { get; set; }
+        public string Studies { get; set; }
+        public string CV { get; set; }
+        public string Photo { get; set; }
         public Guid Id { get; set; }
 
     }

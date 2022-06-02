@@ -90,10 +90,11 @@ namespace IJobs
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddCors(c =>
-            {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
-            });
+            services.AddCors(c => c.AddPolicy("AllowOrigin", options => {
+                    options.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                }));
 
             services.AddMvc();
 

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using IJobs.Models;
+using Microsoft.AspNetCore.Http;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -65,9 +66,10 @@ namespace IJobs.Controllers
         }
 
         // PUT api/<UsersController>/5
-        [HttpPut("{id}")]
+        [Consumes("multipart/form-data")]
+        [HttpPut("{id}")] // [FromForm]
         [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.User))]
-        public void Put(Guid id, [System.Web.Http.FromBody] UserRequestDTO user)
+        public void Put(Guid id, [FromForm, System.Web.Http.FromBody] UserRequestDTO user)
         {
             _service.Update(id, user);
             _service.Save();

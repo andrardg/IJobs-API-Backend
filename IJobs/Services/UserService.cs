@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace IJobs.Services
 {
@@ -66,21 +68,48 @@ namespace IJobs.Services
         }
         public void Update(Guid? id, UserRequestDTO model)
         {
-
-            if (_context.Companies.Any(x => x.Email == model.Email))
+            if (_context.Companies.Any(x => x.Email == model.Email && x.Id != id))
                 throw new Exception("Email '" + model.Email + "' is already taken");
-            if (_context.Users.Any(x => x.Email == model.Email))
+            //if( _context.Users.Where(x => x.Email == model.Email && x.Id != id).Count()>0)
+
+            if (_context.Users.Any(x => x.Email == model.Email && x.Id != id))
                 throw new Exception("Email '" + model.Email + "' is already taken");
 
             var user = _mapper.Map<User>(model); // the new one
             user.Id = (Guid)id;
+            /*if (model.CV != null && model.CV.Length > 0 && model.CV.Length < 300000)
+            {
+                using (var target = new MemoryStream())
+                {
+                    model.CV.CopyTo(target);
+                    byte[] imgBytes = target.ToArray();
+                    string base64string = Convert.ToBase64String(imgBytes);
+                    user.CV = base64string;
+                }
+            }
+            if (model.Photo != null && model.Photo.Length > 0 && model.Photo.Length < 300000)
+            {
+                using (var target = new MemoryStream())
+                {
+                    model.Photo.CopyTo(target);
+                    //user.Photo = target.ToArray();
+                    byte[] imgBytes = target.ToArray();
+                    string base64string = Convert.ToBase64String(imgBytes);
+                    user.Photo = base64string;
+                }
+
+            }*/
 
             // hash password if it was entered
-            if (!string.IsNullOrEmpty(model.Password))
+            if(model.Password != model.oldPasswordHash)//if (!string.IsNullOrEmpty(model.Password))
                 user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+            else
+                user.PasswordHash = model.oldPasswordHash;
 
             // copy model to user and save
+            user.DateModified = DateTime.UtcNow;
             _userRepository.Update(user);
+
         }
         public IEnumerable<UserResponseDTO> GetAllUsers()
         {
@@ -88,7 +117,8 @@ namespace IJobs.Services
             var dtos = new List<UserResponseDTO>();
             foreach (var result in results)
             {
-                var response = _mapper.Map<UserResponseDTO>(result);
+                //var response = _mapper.Map<UserResponseDTO>(result);
+                var response = new UserResponseDTO(result);
                 dtos.Add(response);
             }
             return dtos;
@@ -98,7 +128,8 @@ namespace IJobs.Services
             var user = _userRepository.GetById(id);
             if (user == null) 
                 throw new KeyNotFoundException("User not found");
-            var response = _mapper.Map<UserResponseDTO>(user);
+            //var response = _mapper.Map<UserResponseDTO>(user);
+            var response = new UserResponseDTO(user);
             return response;
         }
         public async Task<UserResponseDTO> GetByIdAsinc(Guid? id)
