@@ -29,15 +29,16 @@ namespace IJobs.Repositories.JobRepository
             var result = _table.Join(_context.Companies, j => j.CompanyId, c => c.Id,
                (j, c) => new { j, c }).Select(obj => obj.j);
             var result2 = from job in _table
-                         join company in _context.Companies on job.CompanyId equals company.Id
-                         select new Job
-                         {
-                             Id = job.Id,
-                             JobTitle = job.JobTitle,
-                             Description = job.Description,
-                             Salary = job.Salary,
-                             JobType = job.JobType,
-                             Experience = job.Experience,
+                          join company in _context.Companies on job.CompanyId equals company.Id
+                          select new Job
+                          {
+                              Id = job.Id,
+                              JobTitle = job.JobTitle,
+                              Description = job.Description,
+                              Salary = job.Salary,
+                              JobType = job.JobType,
+                              Experience = job.Experience,
+                              Address = job.Address,
                              Open = job.Open,
                              CompanyId = job.CompanyId,
                              Company = company
