@@ -46,6 +46,13 @@ namespace IJobs.Controllers
         {
             return _service.GetById(id);
         }
+        [HttpGet]
+        [Route("Search/{Name}")]
+        [AllowAnonymous]
+        public IEnumerable<UserResponseDTO> Search(string Name)
+        {
+            return _service.GetByName(Name);
+        }
 
         // POST api/<UsersController>/login
         [HttpPost]

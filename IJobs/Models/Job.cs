@@ -14,6 +14,7 @@ namespace IJobs.Models
         public int Salary { get; set; }
         public string JobType { get; set; }
         public string Experience { get; set; }
+        public string Address { get; set; }
         public bool Open { get; set; }
         public Company Company { get; set; } // one to many between job and company
         public Guid CompanyId { get; set; }

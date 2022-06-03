@@ -13,6 +13,7 @@ namespace IJobs.Services
         IEnumerable<JobDTO> GetAllJobsWithCompany();
         //get by name
         IEnumerable<JobDTO> GetByJobTitle(string title);
+        IEnumerable<JobDTO> GetByJobTitleWithCompany(string title);
         JobDTO GetById(Guid? id);
         void Create(JobDTO job);
         void Update(JobDTO job);

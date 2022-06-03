@@ -15,8 +15,8 @@ namespace IJobs.Services
         void Update(Guid? id, CompanyRequestDTO company);
         IEnumerable<CompanyResponseDTO> GetAllCompanies(); 
         IEnumerable<CompanyResponseDTO> GetByEmail(string email);
-        IEnumerable<CompanyResponseDTO> GetByTitle(string title);
-        IEnumerable<CompanyResponseDTO> GetByTitleIncludingJobs(string title);
+        IEnumerable<CompanyResponseDTO> GetByName(string Name);
+        IEnumerable<CompanyResponseDTO> GetByNameIncludingJobs(string Name);
         CompanyResponseDTO GetById(Guid? id);
         Task<CompanyResponseDTO> GetByIdAsinc(Guid? id);
         Task<bool> SaveAsync();

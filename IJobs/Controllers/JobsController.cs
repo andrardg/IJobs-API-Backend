@@ -44,7 +44,13 @@ namespace IJobs.Controllers
         {
             return _service.GetById(id);
         }
-
+        [HttpGet]
+        [Route("Search/{Name}")]
+        [AllowAnonymous]
+        public IEnumerable<JobDTO> Search(string Name)
+        {
+            return _service.GetByJobTitleWithCompany(Name);
+        }
         // POST api/<JobsController>
         [HttpPost]
         [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company))]

@@ -47,6 +47,25 @@ namespace IJobs.Repositories.JobRepository
         public List<Job> GetByJobTitle(string JobTitle)
         {
             return _table.Where(s => s.JobTitle!.ToLower().Contains(JobTitle.ToLower())).ToList();
+
+        }
+        public List<Job> GetByJobTitleWithCompany(string JobTitle){
+            var result = from job in _table
+                          join company in _context.Companies on job.CompanyId equals company.Id
+                          where job.JobTitle.ToLower().Contains(JobTitle.ToLower())
+                          select new Job
+                          {
+                              Id = job.Id,
+                              JobTitle = job.JobTitle,
+                              Description = job.Description,
+                              Salary = job.Salary,
+                              JobType = job.JobType,
+                              Experience = job.Experience,
+                              Open = job.Open,
+                              CompanyId = job.CompanyId,
+                              Company = company
+                          };
+            return result.ToList();
         }
 
         public List<Job> GetBySalary(int Salary)

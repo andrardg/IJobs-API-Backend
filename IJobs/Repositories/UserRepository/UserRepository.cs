@@ -16,6 +16,10 @@ namespace IJobs.Repositories.UserRepository
         {
 
         }
+        public List<User> GetByName(string Name)
+        {
+            return _table.Where(s => s.FirstName!.ToLower().Contains(Name.ToLower()) || s.LastName!.ToLower().Contains(Name.ToLower())).ToList();
+        }
         public List<User> GetByFirstName(string FirstName)
         {
             return _table.Where(s => s.FirstName!.ToLower().Contains(FirstName.ToLower())).ToList();

@@ -18,6 +18,7 @@ namespace IJobs.Models.DTOs
         public string JobType { get; set; }
         [Required]
         public string Experience { get; set; }
+        public string Address { get; set; }
         public bool Open { get; set; }
         public Guid Id { get; set; }
         [Required]

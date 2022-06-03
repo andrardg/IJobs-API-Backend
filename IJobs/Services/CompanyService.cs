@@ -106,9 +106,9 @@ namespace IJobs.Services
             }
             return dtos;
         }
-        public IEnumerable<CompanyResponseDTO> GetByTitle(string title)
+        public IEnumerable<CompanyResponseDTO> GetByName(string Name)
         {
-            var results = _companyRepository.GetByTitle(title);
+            var results = _companyRepository.GetByName(Name);
             var dtos = new List<CompanyResponseDTO>();
             foreach (var result in results)
             {
@@ -117,9 +117,9 @@ namespace IJobs.Services
             }
             return dtos;
         }
-        public IEnumerable<CompanyResponseDTO> GetByTitleIncludingJobs(string title)
+        public IEnumerable<CompanyResponseDTO> GetByNameIncludingJobs(string Name)
         {
-            var results = _companyRepository.GetByTitleIncludingJobs(title);
+            var results = _companyRepository.GetByNameIncludingJobs(Name);
             var dtos = new List<CompanyResponseDTO>();
             foreach (var result in results)
             {

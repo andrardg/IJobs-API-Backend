@@ -30,21 +30,22 @@ namespace IJobs.Repositories.CompanyRepository
                               Address = company.Address,
                               Description = company.Description,
                               Role = company.Role,
+                              Photo = company.Photo,
                               verifiedAccount = company.verifiedAccount,
                               Jobs = company.Jobs,
                               Id = company.Id
                           };
             return result2.FirstOrDefault();
         }
+        public List<Company> GetByName(string Name)
+        {
+            return _table.Where(s => s.Name!.ToLower().Contains(Name.ToLower())).ToList();
+        }
         public List<Company> GetByEmail(string email)
         {
             return _table.Where(s => s.Email!.ToLower().Contains(email.ToLower())).ToList();
         }
-        public List<Company> GetByTitle(string title)
-        {
-            return _table.Where(s => s.Name!.ToLower().Contains(title.ToLower())).ToList();
-        }
-        public List<Company> GetByTitleIncludingJobs(string title)
+        public List<Company> GetByNameIncludingJobs(string title)
         {
             var result = _table.Where(s => s.Name!.ToLower().Contains(title.ToLower()));
             return result.Include(x => x.Jobs).ToList();

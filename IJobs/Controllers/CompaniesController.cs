@@ -45,7 +45,13 @@ namespace IJobs.Controllers
         {
             return _service.GetById(id);
         }
-
+        [HttpGet]
+        [Route("Search/{Name}")]
+        [AllowAnonymous]
+        public IEnumerable<CompanyResponseDTO> Search(string Name)
+        {
+            return _service.GetByName(Name);
+        }
         // POST api/<CompaniesController>/login
         [HttpPost]
         [Route("Login")]
@@ -65,9 +71,10 @@ namespace IJobs.Controllers
         }
 
         // PUT api/<ValuesController>/5
+        [Consumes("multipart/form-data")]
         [HttpPut("{id}")]
         [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company))]
-        public void Put(Guid? id, [System.Web.Http.FromBody] CompanyRequestDTO company)
+        public void Put(Guid? id, [FromForm, System.Web.Http.FromBody] CompanyRequestDTO company)
         {
             _service.Update(id, company);
             _service.Save();

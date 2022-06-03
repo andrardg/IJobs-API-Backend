@@ -79,6 +79,17 @@ namespace IJobs.Services
             }
             return dtos;
         }
+        public IEnumerable<JobDTO> GetByJobTitleWithCompany(string title)
+        {
+            var results = _jobRepository.GetByJobTitleWithCompany(title);
+            var dtos = new List<JobDTO>();
+            foreach (var result in results)
+            {
+                var response = _mapper.Map<JobDTO>(result);
+                dtos.Add(response);
+            }
+            return dtos;
+        }
 
         public bool Save()
         {

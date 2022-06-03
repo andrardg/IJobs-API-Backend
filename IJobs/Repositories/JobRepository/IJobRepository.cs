@@ -12,6 +12,7 @@ namespace IJobs.Repositories.JobRepository
         List<Job> GetAll();
         List<Job> GetAllWithJoin();
         List<Job> GetByJobTitle(string JobTitle);
+        List<Job> GetByJobTitleWithCompany(string JobTitle);
         List<Job> GetBySalary(int Salary);
         List<Job> GetByJobType(string JobType);
         List<Job> GetByExperience(string Experience);

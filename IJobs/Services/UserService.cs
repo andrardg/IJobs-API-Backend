@@ -140,6 +140,18 @@ namespace IJobs.Services
             var response = _mapper.Map<UserResponseDTO>(user);
             return response;
         }
+        public IEnumerable<UserResponseDTO> GetByName(string Name)
+        {
+            var results = _userRepository.GetByName(Name);
+            var dtos = new List<UserResponseDTO>();
+            foreach (var result in results)
+            {
+                //var response = _mapper.Map<UserResponseDTO>(result);
+                var response = new UserResponseDTO(result);
+                dtos.Add(response);
+            }
+            return dtos;
+        }
         public bool Save()
         {
             try

@@ -16,6 +16,7 @@ namespace IJobs.Services
         IEnumerable<UserResponseDTO> GetAllUsers();
         UserResponseDTO GetById(Guid? id);
         Task<UserResponseDTO> GetByIdAsinc(Guid? id);
+        IEnumerable<UserResponseDTO> GetByName(string Name);
         Task<bool> SaveAsync();
         bool Save();
         void Delete(Guid? id);
