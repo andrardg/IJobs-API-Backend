@@ -9,8 +9,8 @@ namespace IJobs.Services
 {
     public interface IUserService
     {
-        UserResponseDTO Authenticate(UserRequestDTO model);
-        void Register(UserRequestDTO model);
+        AccountDTO Authenticate(AccountDTO model);
+        void Register(AccountDTO model);
         void Create(User user);
         void Update(Guid? id, UserRequestDTO model);
         IEnumerable<UserResponseDTO> GetAllUsers();

@@ -27,16 +27,16 @@ namespace IJobs.Services
             _ijwtUtils = ijwtUtils;
             _mapper = mapper;
         }
-
-        public CompanyResponseDTO Authenticate(CompanyRequestDTO model)
+        public AccountDTO Authenticate(AccountDTO model)
         {
             var company = _context.Companies.FirstOrDefault(x => x.Email == model.Email);
             if (company == null || !BCrypt.Net.BCrypt.Verify(model.Password, company.PasswordHash))
             {
-                throw new Exception("Email or password is incorrect");
+                //throw new Exception("Email or password is incorrect");
+                return new AccountDTO();
             }
             //auth successful
-            var response = _mapper.Map<CompanyResponseDTO>(company);
+            var response = _mapper.Map<AccountDTO>(company);
             //JWT generation (JSON WEB TOKEN)
             response.Token = _ijwtUtils.GenerateJWTToken(company, company.Role);
             return response;
@@ -49,20 +49,17 @@ namespace IJobs.Services
             _companyRepository.Create(company);
             Save();
         }
-        public void Register(CompanyRequestDTO model)
+        public void Register(AccountDTO model)
         {
-            // validate
             if (_context.Companies.Any(x => x.Email == model.Email))
                 throw new Exception("Email '" + model.Email + "' is already taken");
+            if (_context.Users.Any(x => x.Email == model.Email))
+                throw new Exception("Email '" + model.Email + "' is already taken");
 
-            // map model to new company object
             var company = _mapper.Map<Company>(model);
-
-            // hash password
             company.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
 
             company.Role = Role.User;
-            // save company
             Create(company);
             Save();
         }

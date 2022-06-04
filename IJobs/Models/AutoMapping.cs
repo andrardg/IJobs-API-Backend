@@ -18,6 +18,10 @@ namespace IJobs.Models
             CreateMap<CompanyRequestDTO, Company>();
             CreateMap<Company, CompanyResponseDTO>();
             CreateMap<UserJobRelation, UserJobRelationDTO>();
+            CreateMap<User, AccountDTO>();
+            CreateMap<AccountDTO, User>();
+            CreateMap<Company, AccountDTO>();
+            CreateMap<AccountDTO, Company>();
         }
     }
 }

@@ -9,8 +9,8 @@ namespace IJobs.Services
 {
     public interface ICompanyService
     {
-        CompanyResponseDTO Authenticate(CompanyRequestDTO model);
-        void Register(CompanyRequestDTO model);
+        AccountDTO Authenticate(AccountDTO model);
+        void Register(AccountDTO model);
         void Create(Company company);
         void Update(Guid? id, CompanyRequestDTO company);
         IEnumerable<CompanyResponseDTO> GetAllCompanies(); 

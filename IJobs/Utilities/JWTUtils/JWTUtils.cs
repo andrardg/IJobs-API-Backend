@@ -24,7 +24,8 @@ namespace IJobs.Utilities.JWTUtils
         public string GenerateJWTToken(TEntity user, Role role)
         {
             var claims = new[]{
-                 new Claim("id", user.Id.ToString())
+                 new Claim("id", user.Id.ToString()),
+                 new Claim("role", role.ToString())
              };
 
             // Create the JWT security token and encode it.
