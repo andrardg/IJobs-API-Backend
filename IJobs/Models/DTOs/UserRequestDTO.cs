@@ -21,6 +21,7 @@ namespace IJobs.Models.DTOs
         public string Studies { get; set; }
         public string CV { get; set; }
         public string Photo { get; set; }
+        public Role Role { get; set; }
         public Guid Id { get; set; }
 
     }

@@ -52,24 +52,6 @@ namespace IJobs.Controllers
         {
             return _service.GetByName(Name);
         }
-        // POST api/<CompaniesController>/login
-        [HttpPost]
-        [Route("Login")]
-        [AllowAnonymous]
-        public CompanyResponseDTO Login([System.Web.Http.FromBody] CompanyRequestDTO company)
-        {
-            return _service.Authenticate(company);
-        }
-
-        // POST api/<CompaniesController>/register
-        [HttpPost]
-        [Route("Register")]
-        [AllowAnonymous]
-        public void Register([System.Web.Http.FromBody] CompanyRequestDTO company)
-        {
-            _service.Register(company);
-        }
-
         // PUT api/<ValuesController>/5
         [Consumes("multipart/form-data")]
         [HttpPut("{id}")]
