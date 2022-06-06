@@ -18,6 +18,8 @@ namespace IJobs.Models
         public bool Open { get; set; }
         public Company Company { get; set; } // one to many between job and company
         public Guid CompanyId { get; set; }
-        public ICollection<UserJobRelation> UserJobRelations { get; set; } //many to many between job and user
+        public Guid? SubdomainId { get; set; }
+        public Subdomain? Subdomain { get; set; }
+        public ICollection<Application> Applications { get; set; }
     }
 }

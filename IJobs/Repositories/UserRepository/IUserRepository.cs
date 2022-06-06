@@ -14,7 +14,6 @@ namespace IJobs.Repositories.UserRepository
         List<User> GetByLastName(string LastName);
         List<User> GetByEmail(string Email);
         User EmailExists(string Email);
-        List<User> GetAllWithEmploymentInclude();
-        List<User> GetAllEmployedLINQ();
+        List<User> GetAllWithApplications();
     }
 }

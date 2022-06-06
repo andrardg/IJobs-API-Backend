@@ -78,6 +78,7 @@ namespace IJobs.Services
             else
                 company.PasswordHash = model.oldPasswordHash;
 
+            company.DateModified = DateTime.UtcNow;
             // copy model to company and save
             _companyRepository.Update(company);
         }

@@ -17,11 +17,11 @@ namespace IJobs.Models.Base
         public DateTime? DateCreated { get; set; }
 
         public DateTime? DateModified { get; set; }
-        /*public BaseEntity()
+        public BaseEntity()
         {
             this.DateCreated = DateTime.UtcNow;
             this.DateModified = DateTime.UtcNow;
-        }*/
+        }
     }
     
 }

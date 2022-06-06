@@ -16,7 +16,7 @@ namespace IJobs.Repositories.CompanyRepository
         }
         public Company GetByIdWithJobs(Guid? id)
         {
-            var result1 = _table.Find(id);
+            //var result1 = _table.Find(id);
             var result2 = from company in _table
                           join job in _context.Jobs on company.Id equals job.CompanyId
                           into resultGroup

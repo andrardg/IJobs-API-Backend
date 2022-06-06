@@ -1,9 +1,15 @@
 using IJobs.Data;
 using IJobs.Models;
 using IJobs.Repositories.CompanyRepository;
+using IJobs.Repositories.DomainRepository;
 using IJobs.Repositories.JobRepository;
+using IJobs.Repositories.SubdomainRepository;
+using IJobs.Repositories.TutorialRepository;
 using IJobs.Repositories.UserRepository;
 using IJobs.Services;
+using IJobs.Services.DomainService;
+using IJobs.Services.SubdomainService;
+using IJobs.Services.TutorialService;
 using IJobs.Utilities;
 using IJobs.Utilities.JWTUtils;
 using Microsoft.AspNetCore.Authentication;
@@ -105,10 +111,16 @@ namespace IJobs
             services.AddScoped<IJobRepository, JobRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<IDomainRepository, DomainRepository>();
+            services.AddScoped<ISubdomainRepository, SubdomainRepository>();
+            services.AddScoped<ITutorialRepository, TutorialRepository>();
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IJobService, JobService>();
+            services.AddScoped<IDomainService, DomainService>();
+            services.AddScoped<ISubdomainService, SubdomainService>();
+            services.AddScoped<ITutorialService, TutorialService>();
 
             services.AddScoped<IJWTUtils<User>, JWTUtils<User>>();
             services.AddScoped<IJWTUtils<Company>, JWTUtils<Company>>();

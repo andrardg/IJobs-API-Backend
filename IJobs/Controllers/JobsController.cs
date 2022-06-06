@@ -21,12 +21,9 @@ namespace IJobs.Controllers
     public class JobsController : ControllerBase
     {
         private readonly IJobService _service;
-        private readonly IMapper _mapper;
-
-        public JobsController(IJobService service, IMapper mapper)
+        public JobsController(IJobService service)
         {
             _service = service;
-            _mapper = mapper;
         }
 
         // GET: api/<JobsController>

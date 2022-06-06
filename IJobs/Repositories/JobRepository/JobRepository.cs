@@ -26,10 +26,11 @@ namespace IJobs.Repositories.JobRepository
         {
             //var result = _table.Include(x => x.Company).ToList();
             //var name = result[0].Company.Name;
-            var result = _table.Join(_context.Companies, j => j.CompanyId, c => c.Id,
-               (j, c) => new { j, c }).Select(obj => obj.j);
-            var result2 = from job in _table
+            //var result = _table.Join(_context.Companies, j => j.CompanyId, c => c.Id,
+            //   (j, c) => new { j, c }).Select(obj => obj.j);
+            var result = from job in _table
                           join company in _context.Companies on job.CompanyId equals company.Id
+                          join subdomain  in _context.Subdomains on job.SubdomainId equals subdomain.Id
                           select new Job
                           {
                               Id = job.Id,
@@ -39,11 +40,13 @@ namespace IJobs.Repositories.JobRepository
                               JobType = job.JobType,
                               Experience = job.Experience,
                               Address = job.Address,
-                             Open = job.Open,
-                             CompanyId = job.CompanyId,
-                             Company = company
-                         };
-            return result2.ToList();
+                              Open = job.Open,
+                              CompanyId = job.CompanyId,
+                              Company = company,
+                              SubdomainId = job.SubdomainId,
+                              Subdomain = subdomain,
+                          };
+            return result.ToList();
         }
         public List<Job> GetByJobTitle(string JobTitle)
         {
@@ -52,8 +55,9 @@ namespace IJobs.Repositories.JobRepository
         }
         public List<Job> GetByJobTitleWithCompany(string JobTitle){
             var result = from job in _table
-                          join company in _context.Companies on job.CompanyId equals company.Id
-                          where job.JobTitle.ToLower().Contains(JobTitle.ToLower())
+                         join company in _context.Companies on job.CompanyId equals company.Id
+                         join subdomain in _context.Subdomains on job.SubdomainId equals subdomain.Id
+                         where job.JobTitle.ToLower().Contains(JobTitle.ToLower())
                           select new Job
                           {
                               Id = job.Id,
@@ -64,7 +68,9 @@ namespace IJobs.Repositories.JobRepository
                               Experience = job.Experience,
                               Open = job.Open,
                               CompanyId = job.CompanyId,
-                              Company = company
+                              Company = company,
+                              SubdomainId = job.SubdomainId,
+                              Subdomain = subdomain,
                           };
             return result.ToList();
         }

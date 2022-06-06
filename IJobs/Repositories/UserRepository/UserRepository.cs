@@ -36,19 +36,47 @@ namespace IJobs.Repositories.UserRepository
         {
             return _table.FirstOrDefault(x => x.Email!.ToLower().Equals(Email.ToLower()));
         }
-        public List<User> GetAllWithEmploymentInclude()
+        public List<User> GetAllWithApplications()
         {
-            var result = _table.ToList();
-            //var result = _table.Include(x => x.Employment).ToList();
-            return result;
+            /*var result = from user in _table
+                         from app in _context.Applications
+                         where app.UserId == user.Id
+                         select *;
 
-        }
-        public List<User> GetAllEmployedLINQ()
-        {
-            var results = (from m1 in _table
-                         where m1.Employment.Status == "Employed"
-                         select m1).ToList();
-            return results;
+            var applications = from 
+            var result = _table.Select(user => new User
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                PasswordHash = user.PasswordHash,
+                Residence = user.Residence,
+                Studies = user.Studies,
+                CV = user.CV,
+                Photo = user.Photo,
+                Role = user.Role,
+                Applications =  from a in _context.Applications
+                                where a.UserId equals user.Id
+        }).ToList();*/
+            var result = from user in _table
+                         join app in _context.Applications on user.Id equals app.UserId
+                         select new User
+                             {
+                                 Id = user.Id,
+                                 FirstName = user.FirstName,
+                                 LastName = user.LastName,
+                                 Email = user.Email,
+                                 PasswordHash = user.PasswordHash,
+                                 Residence = user.Residence,
+                                 Studies = user.Studies,
+                                 CV = user.CV,
+                                 Photo = user.Photo,
+                                 Role = user.Role,
+                                 Applications = ((ICollection<Application>)(from a in _context.Applications
+                                                where a.UserId == app.UserId
+                                                select a)),
+                             };            return result.ToList();
         }
         public new bool Delete(User entity)
         {

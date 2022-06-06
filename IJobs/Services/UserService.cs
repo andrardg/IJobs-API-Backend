@@ -75,29 +75,6 @@ namespace IJobs.Services
 
             var user = _mapper.Map<User>(model); // the new one
             user.Id = (Guid)id;
-            /*if (model.CV != null && model.CV.Length > 0 && model.CV.Length < 300000)
-            {
-                using (var target = new MemoryStream())
-                {
-                    model.CV.CopyTo(target);
-                    byte[] imgBytes = target.ToArray();
-                    string base64string = Convert.ToBase64String(imgBytes);
-                    user.CV = base64string;
-                }
-            }
-            if (model.Photo != null && model.Photo.Length > 0 && model.Photo.Length < 300000)
-            {
-                using (var target = new MemoryStream())
-                {
-                    model.Photo.CopyTo(target);
-                    //user.Photo = target.ToArray();
-                    byte[] imgBytes = target.ToArray();
-                    string base64string = Convert.ToBase64String(imgBytes);
-                    user.Photo = base64string;
-                }
-
-            }*/
-
             // hash password if it was entered
             if(model.Password != model.oldPasswordHash)//if (!string.IsNullOrEmpty(model.Password))
                 user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
@@ -111,12 +88,12 @@ namespace IJobs.Services
         }
         public IEnumerable<UserResponseDTO> GetAllUsers()
         {
-            var results = _userRepository.GetAllWithEmploymentInclude();
+            var results = _userRepository.GetAllWithApplications();
             var dtos = new List<UserResponseDTO>();
             foreach (var result in results)
             {
-                //var response = _mapper.Map<UserResponseDTO>(result);
-                var response = new UserResponseDTO(result);
+                var response = _mapper.Map<UserResponseDTO>(result);
+                //var response = new UserResponseDTO(result);
                 dtos.Add(response);
             }
             return dtos;
@@ -126,8 +103,8 @@ namespace IJobs.Services
             var user = _userRepository.GetById(id);
             if (user == null) 
                 throw new KeyNotFoundException("User not found");
-            //var response = _mapper.Map<UserResponseDTO>(user);
-            var response = new UserResponseDTO(user);
+            var response = _mapper.Map<UserResponseDTO>(user);
+            //var response = new UserResponseDTO(user);
             return response;
         }
         public async Task<UserResponseDTO> GetByIdAsinc(Guid? id)
@@ -144,8 +121,8 @@ namespace IJobs.Services
             var dtos = new List<UserResponseDTO>();
             foreach (var result in results)
             {
-                //var response = _mapper.Map<UserResponseDTO>(result);
-                var response = new UserResponseDTO(result);
+                var response = _mapper.Map<UserResponseDTO>(result);
+                //var response = new UserResponseDTO(result);
                 dtos.Add(response);
             }
             return dtos;

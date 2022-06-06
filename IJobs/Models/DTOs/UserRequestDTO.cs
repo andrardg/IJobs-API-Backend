@@ -23,6 +23,6 @@ namespace IJobs.Models.DTOs
         public string Photo { get; set; }
         public Role Role { get; set; }
         public Guid Id { get; set; }
-
+        public ICollection<Application> Applications { get; set; }
     }
 }

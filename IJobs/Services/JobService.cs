@@ -107,6 +107,7 @@ namespace IJobs.Services
         public void Update(JobDTO model)
         {
             var job = _mapper.Map<Job>(model);
+            job.DateModified = DateTime.UtcNow;
             _jobRepository.Update(job);
         }
     }

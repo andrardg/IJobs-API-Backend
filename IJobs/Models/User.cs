@@ -21,7 +21,6 @@ namespace IJobs.Models
         public string CV { get; set; }
         public string Photo { get; set; }
         public Role Role { get; set; }
-        public Employment Employment { get; set; } // one to one between user and employment
-        public ICollection<UserJobRelation> UserJobRelations { get; set; } // many to many between user and job
+        public ICollection<Application> Applications { get; set; }
     }
 }
