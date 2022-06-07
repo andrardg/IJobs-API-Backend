@@ -19,7 +19,7 @@ namespace IJobs.Repositories.SubdomainRepository
         }
         public List<Subdomain> GetAllByDomainId(Guid? id)
         {
-            return _table.Where(x => x.DomainId == id).ToList();
+            return _table.Where(x => x.DomainId == id).OrderBy(x => x.Name).ToList();
         }
 
         public List<Subdomain> GetAllByDomainIdJoin(Guid? id)

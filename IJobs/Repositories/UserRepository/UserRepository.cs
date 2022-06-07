@@ -60,7 +60,6 @@ namespace IJobs.Repositories.UserRepository
                                 where a.UserId equals user.Id
         }).ToList();*/
             var result = from user in _table
-                         join app in _context.Applications on user.Id equals app.UserId
                          select new User
                              {
                                  Id = user.Id,
@@ -74,7 +73,7 @@ namespace IJobs.Repositories.UserRepository
                                  Photo = user.Photo,
                                  Role = user.Role,
                                  Applications = ((ICollection<Application>)(from a in _context.Applications
-                                                where a.UserId == app.UserId
+                                                where a.UserId == user.Id
                                                 select a)),
                              };            return result.ToList();
         }

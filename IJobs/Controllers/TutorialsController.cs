@@ -27,7 +27,7 @@ namespace IJobs.Controllers
         [AllowAnonymous]
         public IEnumerable<TutorialDTO> Get()
         {
-            return _service.GetAllTutorials();
+            return _service.GetAllTutorialsJoin();
         }
         [HttpGet]
         [AllowAnonymous]

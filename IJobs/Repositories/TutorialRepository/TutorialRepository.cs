@@ -18,6 +18,19 @@ namespace IJobs.Repositories.TutorialRepository
         {
             return _table.ToList();
         }
+        public List<Tutorial> GetAllJoin()
+        {
+            var result = from tut in _table
+                         join subd in _context.Subdomains on tut.SubdomainId equals subd.Id
+                         select new Tutorial
+                         {
+                             Id = tut.Id,
+                             Link = tut.Link,
+                             SubdomainId = tut.SubdomainId,
+                             Subdomain = subd// ((Subdomain)(from sub in _context.Subdomains where sub.Id == tut.SubdomainId select sub))
+                         };
+            return result.ToList();
+        }
         public List<Tutorial> GetAllBySubdomainId(Guid? id)
         {
             return _table.Where(x => x.SubdomainId == id).ToList();

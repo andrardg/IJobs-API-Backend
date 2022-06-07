@@ -33,6 +33,17 @@ namespace IJobs.Services.TutorialService
             }
             return dtos;
         }
+        public IEnumerable<TutorialDTO> GetAllTutorialsJoin()
+        {
+            var results = _tutorialRepository.GetAllJoin();
+            var dtos = new List<TutorialDTO>();
+            foreach (var result in results)
+            {
+                var response = _mapper.Map<TutorialDTO>(result);
+                dtos.Add(response);
+            }
+            return dtos;
+        }
         public IEnumerable<TutorialDTO> GetAllTutorialsBySubdomainId(Guid? id)
         {
             var results = _tutorialRepository.GetAllBySubdomainId(id);

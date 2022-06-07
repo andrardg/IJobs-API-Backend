@@ -10,6 +10,7 @@ namespace IJobs.Repositories.TutorialRepository
     public interface ITutorialRepository : IGenericRepository<Tutorial>
     {
         List<Tutorial> GetAll();
+        List<Tutorial> GetAllJoin();
         List<Tutorial> GetAllBySubdomainId(Guid? id);
         List<Tutorial> GetAllBySubdomainIdJoin(Guid? id);
         Tutorial GetByIdWithJoin(Guid? id);

@@ -9,6 +9,7 @@ namespace IJobs.Services.TutorialService
     public interface ITutorialService
     {
         IEnumerable<TutorialDTO> GetAllTutorials();
+        IEnumerable<TutorialDTO> GetAllTutorialsJoin();
         IEnumerable<TutorialDTO> GetAllTutorialsBySubdomainId(Guid? id);
         IEnumerable<TutorialDTO> GetAllTutorialsBySubdomainIdJoin(Guid? id);
         TutorialDTO GetById(Guid? id);

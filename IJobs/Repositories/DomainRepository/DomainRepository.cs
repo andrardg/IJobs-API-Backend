@@ -17,7 +17,7 @@ namespace IJobs.Repositories.DomainRepository
         }
         List<Domain> IDomainRepository.GetAll()
         {
-            return _table.ToList();
+            return _table.OrderBy(x => x.Name).ToList();
         }
         public List<Domain> GetAllWithSubdomains()
         {
