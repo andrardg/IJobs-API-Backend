@@ -1,13 +1,17 @@
 using IJobs.Data;
 using IJobs.Models;
+using IJobs.Repositories.ApplicationRepository;
 using IJobs.Repositories.CompanyRepository;
 using IJobs.Repositories.DomainRepository;
+using IJobs.Repositories.InterviewRepository;
 using IJobs.Repositories.JobRepository;
 using IJobs.Repositories.SubdomainRepository;
 using IJobs.Repositories.TutorialRepository;
 using IJobs.Repositories.UserRepository;
 using IJobs.Services;
+using IJobs.Services.ApplicationService;
 using IJobs.Services.DomainService;
+using IJobs.Services.InterviewService;
 using IJobs.Services.SubdomainService;
 using IJobs.Services.TutorialService;
 using IJobs.Utilities;
@@ -114,6 +118,8 @@ namespace IJobs
             services.AddScoped<IDomainRepository, DomainRepository>();
             services.AddScoped<ISubdomainRepository, SubdomainRepository>();
             services.AddScoped<ITutorialRepository, TutorialRepository>();
+            services.AddScoped<IApplicationRepository, ApplicationRepository>();
+            services.AddScoped<IInterviewRepository, InterviewRepository>();
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICompanyService, CompanyService>();
@@ -121,6 +127,8 @@ namespace IJobs
             services.AddScoped<IDomainService, DomainService>();
             services.AddScoped<ISubdomainService, SubdomainService>();
             services.AddScoped<ITutorialService, TutorialService>();
+            services.AddScoped<IApplicationService, ApplicationService>();
+            services.AddScoped<IInterviewService, InterviewService>();
 
             services.AddScoped<IJWTUtils<User>, JWTUtils<User>>();
             services.AddScoped<IJWTUtils<Company>, JWTUtils<Company>>();

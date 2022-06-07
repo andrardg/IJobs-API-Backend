@@ -51,7 +51,8 @@ namespace IJobs.Data
 
 
             //many to many
-            modelBuilder.Entity<Application>().HasKey(app => new { app.UserId, app.JobId });
+            //modelBuilder.Entity<Application>().HasKey(app => new { app.UserId, app.JobId });
+            modelBuilder.Entity<Application>().HasIndex(a => new { a.UserId, a.JobId }).IsUnique();
 
             modelBuilder.Entity<Application>()
                    .HasOne<User>(app => app.User)
