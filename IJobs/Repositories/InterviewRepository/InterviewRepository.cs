@@ -24,6 +24,7 @@ namespace IJobs.Repositories.InterviewRepository
                          join app in _context.Applications on interview.ApplicationId equals app.Id
                          join job in _context.Jobs on app.JobId equals job.Id
                          join user in _context.Users on app.UserId equals user.Id
+                         orderby interview.Date descending
                          select new Interview
                          {
                              Id = interview.Id,

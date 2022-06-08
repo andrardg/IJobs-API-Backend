@@ -34,7 +34,7 @@ namespace IJobs.Repositories.ApplicationRepository
                              User = user,
                              CV = app.CV,
                              Status = app.Status,
-                             Interviews = ((ICollection<Interview>)(from interview in _context.Interviews where app.Id == interview.ApplicationId select interview))
+                             Interviews = ((ICollection<Interview>)(from interview in _context.Interviews where app.Id == interview.ApplicationId orderby interview.Date descending select interview))
                          };
             return result.ToList();
         }
