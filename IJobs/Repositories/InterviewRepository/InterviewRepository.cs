@@ -22,11 +22,22 @@ namespace IJobs.Repositories.InterviewRepository
         {
             var result = from interview in _table
                          join app in _context.Applications on interview.ApplicationId equals app.Id
+                         join job in _context.Jobs on app.JobId equals job.Id
+                         join user in _context.Users on app.UserId equals user.Id
                          select new Interview
                          {
                              Id = interview.Id,
                              ApplicationId = interview.ApplicationId,
-                             Application = app,
+                             Application = new Application
+                             {
+                                 Id = app.Id,
+                                 JobId = app.JobId,
+                                 Job = job,
+                                 UserId = app.UserId,
+                                 User = user,
+                                 CV = app.CV,
+                                 Status = app.Status
+                             },
                              Date = interview.Date,
                              IsOnline = interview.IsOnline,
                              Location = interview.Location,
