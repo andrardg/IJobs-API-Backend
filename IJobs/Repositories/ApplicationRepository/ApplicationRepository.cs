@@ -29,7 +29,20 @@ namespace IJobs.Repositories.ApplicationRepository
                          {
                              Id = app.Id,
                              JobId = app.JobId,
-                             Job = job,
+                             Job = new Job
+                             {
+                                 Id = job.Id,
+                                 JobTitle = job.JobTitle,
+                                 Description = job.Description,
+                                 Salary = job.Salary,
+                                 JobType = job.JobType,
+                                 Experience = job.Experience,
+                                 Address = job.Address,
+                                 Open = job.Open,
+                                 CompanyId = job.CompanyId,
+                                 Company = ((Company)(from comp in _context.Companies where job.CompanyId == comp.Id select comp).FirstOrDefault()),
+                                 SubdomainId = job.SubdomainId,
+                             },
                              UserId = app.UserId,
                              User = user,
                              CV = app.CV,

@@ -58,6 +58,7 @@ namespace IJobs.Controllers
 
         // DELETE api/<InterviewController>/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company) + ", " + nameof(Role.User))]
         public void Delete(Guid id)
         {
             _service.Delete(id);
