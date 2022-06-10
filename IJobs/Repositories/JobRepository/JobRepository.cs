@@ -18,6 +18,31 @@ namespace IJobs.Repositories.JobRepository
         {
 
         }
+        public Job GetByIdWithJoin(Guid? id)
+        {
+            var result = _table.Where(x => x.Id == id).FirstOrDefault();
+            result.Subdomain = (from subd in _context.Subdomains where subd.Id == result.SubdomainId
+                                select new Subdomain
+                                {
+                                    Id = subd.Id,
+                                    Name = subd.Name,
+                                    DomainId = subd.DomainId,
+                                }).FirstOrDefault();
+            result.Company = (from company in _context.Companies where company.Id == result.CompanyId
+                              select new Company
+                              {
+                                  Name = company.Name,
+                                  Email = company.Email,
+                                  PasswordHash = company.PasswordHash,
+                                  Address = company.Address,
+                                  Description = company.Description,
+                                  Role = company.Role,
+                                  Photo = company.Photo,
+                                  verifiedAccount = company.verifiedAccount,
+                                  Id = company.Id
+                              }).FirstOrDefault();
+            return result;
+        }
         public List<Job> GetAll()
         {
             return _table.ToList();

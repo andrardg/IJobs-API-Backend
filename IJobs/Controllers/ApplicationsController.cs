@@ -49,7 +49,7 @@ namespace IJobs.Controllers
 
         // PUT api/<ApplicationController>/5
         [HttpPut("{id}")]
-        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company))]
+        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company) + ", " + nameof(Role.User))]
         public void Put(Guid id, [FromBody] ApplicationDTO app)
         {
             app.Id = id;

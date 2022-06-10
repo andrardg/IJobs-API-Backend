@@ -33,7 +33,32 @@ namespace IJobs.Repositories.InterviewRepository
                              {
                                  Id = app.Id,
                                  JobId = app.JobId,
-                                 Job = job,
+                                 Job = (Job)(from job2 in _context.Jobs where job2.Id == job.Id select new Job
+                                 {
+                                     Id = job.Id,
+                                     JobTitle = job.JobTitle,
+                                     Description = job.Description,
+                                     Salary = job.Salary,
+                                     JobType = job.JobType,
+                                     Experience = job.Experience,
+                                     Address = job.Address,
+                                     Open = job.Open,
+                                     CompanyId = job.CompanyId,
+                                     Company = (from company in _context.Companies
+                                                where company.Id == job2.CompanyId
+                                                select new Company
+                                                {
+                                                    Name = company.Name,
+                                                    Email = company.Email,
+                                                    PasswordHash = company.PasswordHash,
+                                                    Address = company.Address,
+                                                    Description = company.Description,
+                                                    Role = company.Role,
+                                                    verifiedAccount = company.verifiedAccount,
+                                                    Id = company.Id
+                                                }).FirstOrDefault(),
+                                    SubdomainId = job.SubdomainId
+                                 }).FirstOrDefault(),
                                  UserId = app.UserId,
                                  User = user,
                                  CV = app.CV,

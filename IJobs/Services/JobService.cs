@@ -41,7 +41,7 @@ namespace IJobs.Services
 
         public JobDTO GetById(Guid? id)
         {
-            var result = _jobRepository.GetById(id);
+            var result = _jobRepository.GetByIdWithJoin(id);
             var job = _mapper.Map<JobDTO>(result);
             return job;
         }

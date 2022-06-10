@@ -9,6 +9,7 @@ namespace IJobs.Repositories.JobRepository
 {
     public interface IJobRepository : IGenericRepository<Job>
     {
+        Job GetByIdWithJoin(Guid? id);
         List<Job> GetAll();
         List<Job> GetAllWithJoin();
         List<Job> GetByJobTitle(string JobTitle);

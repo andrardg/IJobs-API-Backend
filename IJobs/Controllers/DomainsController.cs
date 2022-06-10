@@ -28,7 +28,7 @@ namespace IJobs.Controllers
         [AllowAnonymous]
         public IEnumerable<DomainDTO> Get()
         {
-            return _service.GetAllDomains();
+            return _service.GetAllDomainsWithSubdomains();
         }
 
         // GET api/<DomainsController>/5
