@@ -18,7 +18,9 @@ namespace IJobs.Models.DTOs
         public bool IsOnline { get; set; }
         [Required]
         public string Location { get; set; }
+        [Required]
         public bool ResponseUser { get; set; }
+        [Required]
         public bool ResponseCompany { get; set; }
     }
 }

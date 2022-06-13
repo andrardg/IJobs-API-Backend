@@ -4,14 +4,16 @@ using IJobs.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IJobs.Migrations
 {
     [DbContext(typeof(projectContext))]
-    partial class projectContextModelSnapshot : ModelSnapshot
+    [Migration("20220613223438_notnulleverywhere")]
+    partial class notnulleverywhere
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -366,8 +368,7 @@ namespace IJobs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("JobTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("JobType")
                         .IsRequired()
@@ -415,6 +416,10 @@ namespace IJobs.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("JobTitle")
+                        .IsUnique()
+                        .HasFilter("[JobTitle] IS NOT NULL");
 
                     b.HasIndex("SubdomainId");
 
@@ -687,8 +692,7 @@ namespace IJobs.Migrations
 
                     b.HasOne("IJobs.Models.Subdomain", "Subdomain")
                         .WithMany("Jobs")
-                        .HasForeignKey("SubdomainId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("SubdomainId");
 
                     b.Navigation("Company");
 
@@ -711,7 +715,7 @@ namespace IJobs.Migrations
                     b.HasOne("IJobs.Models.Subdomain", "Subdomain")
                         .WithMany("Tutorials")
                         .HasForeignKey("SubdomainId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Subdomain");

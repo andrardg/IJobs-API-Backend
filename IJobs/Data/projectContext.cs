@@ -25,8 +25,39 @@ namespace IJobs.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Company>().HasIndex(x => x.Email).IsUnique();
+            //modelBuilder.Entity<Company>().Property(x => x.Email).IsRequired();
+            modelBuilder.Entity<Company>().Property(x => x.PasswordHash).IsRequired();
+            modelBuilder.Entity<Company>().Property(x => x.verifiedAccount).IsRequired();
+
             modelBuilder.Entity<User>().HasIndex(x => x.Email).IsUnique();
+            //modelBuilder.Entity<User>().Property(x => x.Email).IsRequired();
+            modelBuilder.Entity<User>().Property(x => x.PasswordHash).IsRequired();
+
             modelBuilder.Entity<Domain>().HasIndex(x => x.Name).IsUnique();
+            modelBuilder.Entity<Domain>().Property(x => x.Name).IsRequired();
+
+            modelBuilder.Entity<Subdomain>().HasIndex(x => new {x.DomainId, x.Name}).IsUnique();
+            modelBuilder.Entity<Subdomain>().Property(x => x.Name).IsRequired();
+
+            modelBuilder.Entity<Job>().Property(x => x.JobTitle).IsRequired();
+            modelBuilder.Entity<Job>().Property(x => x.Description).IsRequired();
+            modelBuilder.Entity<Job>().Property(x => x.Salary).IsRequired();
+            modelBuilder.Entity<Job>().Property(x => x.JobType).IsRequired(); 
+            modelBuilder.Entity<Job>().Property(x => x.Experience).IsRequired();
+            modelBuilder.Entity<Job>().Property(x => x.Address).IsRequired();
+            modelBuilder.Entity<Job>().Property(x => x.Open).IsRequired();
+
+            modelBuilder.Entity<Tutorial>().Property(x => x.Link).IsRequired();
+
+            modelBuilder.Entity<Application>().Property(x => x.CV).IsRequired();
+            modelBuilder.Entity<Application>().Property(x => x.Status).IsRequired();
+
+
+            modelBuilder.Entity<Interview>().Property(x => x.Date).IsRequired();
+            modelBuilder.Entity<Interview>().Property(x => x.IsOnline).IsRequired();
+            modelBuilder.Entity<Interview>().Property(x => x.Location).IsRequired();
+            modelBuilder.Entity<Interview>().Property(x => x.ResponseUser).IsRequired();
+            modelBuilder.Entity<Interview>().Property(x => x.ResponseCompany).IsRequired();
 
             //one to many
             modelBuilder.Entity<Company>()
