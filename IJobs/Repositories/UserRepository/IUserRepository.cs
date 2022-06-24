@@ -14,6 +14,7 @@ namespace IJobs.Repositories.UserRepository
         List<User> GetByLastName(string LastName);
         List<User> GetByEmail(string Email);
         User EmailExists(string Email);
-        List<User> GetAllWithApplications();
+        List<User> GetAllWithJoin();
+        User GetByIdJoin(Guid id);
     }
 }

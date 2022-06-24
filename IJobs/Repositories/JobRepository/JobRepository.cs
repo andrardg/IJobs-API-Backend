@@ -49,10 +49,6 @@ namespace IJobs.Repositories.JobRepository
         }
         public List<Job> GetAllWithJoin()
         {
-            //var result = _table.Include(x => x.Company).ToList();
-            //var name = result[0].Company.Name;
-            //var result = _table.Join(_context.Companies, j => j.CompanyId, c => c.Id,
-            //   (j, c) => new { j, c }).Select(obj => obj.j);
             var result = from job in _table
                           join company in _context.Companies on job.CompanyId equals company.Id
                           join subdomain  in _context.Subdomains on job.SubdomainId equals subdomain.Id
@@ -70,6 +66,8 @@ namespace IJobs.Repositories.JobRepository
                               Company = company,
                               SubdomainId = job.SubdomainId,
                               Subdomain = subdomain,
+                              UserId = job.UserId,
+                              User = job.User
                           };
             return result.ToList();
         }
@@ -96,6 +94,8 @@ namespace IJobs.Repositories.JobRepository
                               Company = company,
                               SubdomainId = job.SubdomainId,
                               Subdomain = subdomain,
+                              UserId = job.UserId,
+                              User = job.User
                           };
             return result.ToList();
         }

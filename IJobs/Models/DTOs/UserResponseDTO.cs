@@ -24,24 +24,7 @@ namespace IJobs.Models.DTOs
         public Role Role { get; set; }
         public string Token { get; set; }
         public ICollection<Application> Applications { get; set; }
-        public UserResponseDTO()
-        {
-        }
-        public UserResponseDTO(User user, string token)
-        {
-            Id = user.Id;
-            FirstName = user.FirstName;
-            LastName = user.LastName;
-            Email = user.Email;
-            PasswordHash = user.PasswordHash;
-            Residence = user.Residence;
-            Occupation = user.Occupation;
-            Studies = user.Studies;
-            CV = user.CV;
-            Photo = user.Photo;
-            Role = user.Role;
-            Applications = user.Applications;
-            Token = token;
-        }
+        public ICollection<Invite> Invites { get; set; }
+        public ICollection<Job> Jobs { get; set; }
     }
 }

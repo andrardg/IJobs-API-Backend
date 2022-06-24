@@ -22,12 +22,14 @@ namespace IJobs.Models.DTOs
         public string Address { get; set; }
         public bool Open { get; set; }
         public Guid Id { get; set; }
-        [Required]
         public Guid CompanyId { get; set; }
         public Company Company { get; set; }
         [Required]
         public Guid SubdomainId { get; set; }
         public Subdomain Subdomain { get; set; }
         public ICollection<Application> Applications { get; set; }
+
+        public Guid UserId { get; set; }
+        public User User { get; set; }
     }
 }

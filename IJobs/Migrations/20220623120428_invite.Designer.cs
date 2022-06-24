@@ -4,14 +4,16 @@ using IJobs.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IJobs.Migrations
 {
     [DbContext(typeof(projectContext))]
-    partial class projectContextModelSnapshot : ModelSnapshot
+    [Migration("20220623120428_invite")]
+    partial class invite
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -784,7 +786,7 @@ namespace IJobs.Migrations
                         .IsRequired();
 
                     b.HasOne("IJobs.Models.User", "User")
-                        .WithMany("Jobs")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("Company");
@@ -850,8 +852,6 @@ namespace IJobs.Migrations
                     b.Navigation("Applications");
 
                     b.Navigation("Invites");
-
-                    b.Navigation("Jobs");
                 });
 #pragma warning restore 612, 618
         }

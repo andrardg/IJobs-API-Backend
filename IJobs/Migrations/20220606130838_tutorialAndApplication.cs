@@ -239,7 +239,7 @@ namespace IJobs.Migrations
                 column: "SubdomainId",
                 principalTable: "Subdomains",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -88,7 +88,7 @@ namespace IJobs.Services
         }
         public IEnumerable<UserResponseDTO> GetAllUsers()
         {
-            var results = _userRepository.GetAllWithApplications();
+            var results = _userRepository.GetAllWithJoin();
             var dtos = new List<UserResponseDTO>();
             foreach (var result in results)
             {

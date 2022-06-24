@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IJobs.Migrations
 {
     [DbContext(typeof(projectContext))]
-    [Migration("20220613232806_ondeletesetnull")]
-    partial class ondeletesetnull
+    [Migration("20220616122538_deletecascadejob")]
+    partial class deletecascadejob
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -690,7 +690,7 @@ namespace IJobs.Migrations
                     b.HasOne("IJobs.Models.Subdomain", "Subdomain")
                         .WithMany("Jobs")
                         .HasForeignKey("SubdomainId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Company");
 
@@ -713,7 +713,7 @@ namespace IJobs.Migrations
                     b.HasOne("IJobs.Models.Subdomain", "Subdomain")
                         .WithMany("Tutorials")
                         .HasForeignKey("SubdomainId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Subdomain");

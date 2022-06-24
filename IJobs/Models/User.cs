@@ -22,5 +22,7 @@ namespace IJobs.Models
         public string Photo { get; set; }
         public Role Role { get; set; }
         public ICollection<Application> Applications { get; set; }
+        public ICollection<Invite> Invites { get; set; }
+        public ICollection<Job> Jobs { get; set; }
     }
 }

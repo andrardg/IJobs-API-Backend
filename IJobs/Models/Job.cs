@@ -16,10 +16,15 @@ namespace IJobs.Models
         public string Experience { get; set; }
         public string Address { get; set; }
         public bool Open { get; set; }
-        public Company Company { get; set; } // one to many between job and company
-        public Guid CompanyId { get; set; }
-        public Guid? SubdomainId { get; set; }
-        public Subdomain? Subdomain { get; set; }
+        public Company Company { get; set; }
+        public Guid? CompanyId { get; set; }
+        public User User { get; set; }
+        public Guid? UserId { get; set; }
+        public Guid SubdomainId { get; set; }
+        public Subdomain Subdomain { get; set; }
         public ICollection<Application> Applications { get; set; }
+
+
+        public ICollection<Invite> Invites { get; set; }
     }
 }

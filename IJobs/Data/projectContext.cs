@@ -18,6 +18,7 @@ namespace IJobs.Data
         public DbSet<Tutorial> Tutorials { get; set; }
         public DbSet<Application> Applications { get; set; }
         public DbSet<Interview> Interviews { get; set; }
+        public DbSet<Invite> Invites { get; set; }
         public projectContext(DbContextOptions<projectContext> options) : base(options)
         {
 
@@ -25,12 +26,10 @@ namespace IJobs.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Company>().HasIndex(x => x.Email).IsUnique();
-            //modelBuilder.Entity<Company>().Property(x => x.Email).IsRequired();
             modelBuilder.Entity<Company>().Property(x => x.PasswordHash).IsRequired();
             modelBuilder.Entity<Company>().Property(x => x.verifiedAccount).IsRequired();
 
             modelBuilder.Entity<User>().HasIndex(x => x.Email).IsUnique();
-            //modelBuilder.Entity<User>().Property(x => x.Email).IsRequired();
             modelBuilder.Entity<User>().Property(x => x.PasswordHash).IsRequired();
 
             modelBuilder.Entity<Domain>().HasIndex(x => x.Name).IsUnique();
@@ -51,6 +50,9 @@ namespace IJobs.Data
 
             modelBuilder.Entity<Application>().Property(x => x.CV).IsRequired();
             modelBuilder.Entity<Application>().Property(x => x.Status).IsRequired();
+            modelBuilder.Entity<Application>().HasIndex(a => new { a.UserId, a.JobId }).IsUnique();
+
+            modelBuilder.Entity<Invite>().HasIndex(a => new { a.UserId, a.JobId }).IsUnique();
 
 
             modelBuilder.Entity<Interview>().Property(x => x.Date).IsRequired();
@@ -78,18 +80,16 @@ namespace IJobs.Data
 
             modelBuilder.Entity<Subdomain>()
                 .HasMany(c => c.Jobs)
-                .WithOne(j => j.Subdomain);
+                .WithOne(j => j.Subdomain)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
             //many to many
-            //modelBuilder.Entity<Application>().HasKey(app => new { app.UserId, app.JobId });
-            modelBuilder.Entity<Application>().HasIndex(a => new { a.UserId, a.JobId }).IsUnique();
 
             modelBuilder.Entity<Application>()
                    .HasOne<User>(app => app.User)
                    .WithMany(u => u.Applications)
                    .HasForeignKey(app => app.UserId);
-
 
             modelBuilder.Entity<Application>()
                    .HasOne<Job>(app => app.Job)
@@ -97,6 +97,15 @@ namespace IJobs.Data
                    .HasForeignKey(app => app.JobId);
 
 
+            modelBuilder.Entity<Invite>()
+                   .HasOne<User>(inv => inv.User)
+                   .WithMany(u => u.Invites)
+                   .HasForeignKey(inv => inv.UserId);
+
+            modelBuilder.Entity<Invite>()
+                   .HasOne<Job>(inv => inv.Job)
+                   .WithMany(j => j.Invites)
+                   .HasForeignKey(inv => inv.JobId);
 
 
             base.OnModelCreating(modelBuilder);

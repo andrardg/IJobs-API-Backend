@@ -36,29 +36,8 @@ namespace IJobs.Repositories.UserRepository
         {
             return _table.FirstOrDefault(x => x.Email!.ToLower().Equals(Email.ToLower()));
         }
-        public List<User> GetAllWithApplications()
+        public List<User> GetAllWithJoin()
         {
-            /*var result = from user in _table
-                         from app in _context.Applications
-                         where app.UserId == user.Id
-                         select *;
-
-            var applications = from 
-            var result = _table.Select(user => new User
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                PasswordHash = user.PasswordHash,
-                Residence = user.Residence,
-                Studies = user.Studies,
-                CV = user.CV,
-                Photo = user.Photo,
-                Role = user.Role,
-                Applications =  from a in _context.Applications
-                                where a.UserId equals user.Id
-        }).ToList();*/
             var result = from user in _table
                          select new User
                              {
@@ -67,6 +46,7 @@ namespace IJobs.Repositories.UserRepository
                                  LastName = user.LastName,
                                  Email = user.Email,
                                  PasswordHash = user.PasswordHash,
+                                 Occupation = user.Occupation,
                                  Residence = user.Residence,
                                  Studies = user.Studies,
                                  CV = user.CV,
@@ -75,7 +55,27 @@ namespace IJobs.Repositories.UserRepository
                                  Applications = ((ICollection<Application>)(from a in _context.Applications
                                                 where a.UserId == user.Id
                                                 select a)),
-                             };            return result.ToList();
+                                 Invites = ((ICollection<Invite>)(from a in _context.Invites
+                                                where a.UserId == user.Id
+                                                select a)),
+                                 Jobs = ((ICollection<Job>)(from a in _context.Jobs
+                                                where a.UserId == user.Id
+                                                select a)),
+                         };            return result.ToList();
+        }
+        public User GetByIdJoin(Guid id)
+        {
+            var result = _table.Where(x => x.Id == id).FirstOrDefault();
+            result.Applications = ((ICollection<Application>)(from a in _context.Applications
+                                                              where a.UserId == result.Id
+                                                              select a));
+            result.Invites = ((ICollection<Invite>)(from a in _context.Invites
+                                                    where a.UserId == result.Id
+                                                    select a));
+            result.Jobs = ((ICollection<Job>)(from a in _context.Jobs
+                                              where a.UserId == result.Id
+                                              select a));
+            return result;
         }
         public new bool Delete(User entity)
         {

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using IJobs.Data;
+﻿using IJobs.Data;
 using IJobs.Models;
 using IJobs.Repositories.GenericRepository;
 using System;
@@ -7,28 +6,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IJobs.Repositories.ApplicationRepository
+namespace IJobs.Repositories.InviteRepository
 {
-    public class ApplicationRepository : GenericRepository<Application>, IApplicationRepository
+    public class InviteRepository : GenericRepository<Invite>, IInviteRepository
     {
-        public ApplicationRepository(projectContext context) : base(context)
+        public InviteRepository(projectContext context) : base(context)
         {
 
         }
-        public List<Application> GetAll()
+        public List<Invite> GetAll()
         {
             return _table.ToList();
         }
-
-        public List<Application> GetAllJoin()
+        public List<Invite> GetAllJoin()
         {
-            var result = from app in _table
-                         join user in _context.Users on app.UserId equals user.Id
-                         join job in _context.Jobs on app.JobId equals job.Id
-                         select new Application
+            var result = from inv in _table
+                         join user in _context.Users on inv.UserId equals user.Id
+                         join job in _context.Jobs on inv.JobId equals job.Id
+                         select new Invite
                          {
-                             Id = app.Id,
-                             JobId = app.JobId,
+                             Id = inv.Id,
+                             JobId = inv.JobId,
                              Job = new Job
                              {
                                  Id = job.Id,
@@ -36,7 +34,7 @@ namespace IJobs.Repositories.ApplicationRepository
                                  Description = job.Description,
                                  Salary = job.Salary,
                                  JobType = job.JobType,
-                                 Experience = job.Experience, 
+                                 Experience = job.Experience,
                                  Address = job.Address,
                                  Open = job.Open,
                                  CompanyId = job.CompanyId,
@@ -44,32 +42,28 @@ namespace IJobs.Repositories.ApplicationRepository
                                  SubdomainId = job.SubdomainId,
                                  Subdomain = ((Subdomain)(from subd in _context.Subdomains where job.SubdomainId == subd.Id select subd).FirstOrDefault()),
                              },
-                             UserId = app.UserId,
-                             User = user,
-                             CV = app.CV,
-                             Status = app.Status,
-                             Interviews = ((ICollection<Interview>)(from interview in _context.Interviews where app.Id == interview.ApplicationId orderby interview.Date descending select interview))
+                             UserId = inv.UserId,
+                             User = user
                          };
             return result.ToList();
         }
-        public Application GetById(Guid? id)
+        public Invite GetById(Guid? id)
         {
             return _table.Where(x => x.Id == id).FirstOrDefault();
         }
-        public Application GetByIdJoin(Guid? id)
+        public Invite GetByIdJoin(Guid? id)
         {
             var result = _table.Where(x => x.Id == id).FirstOrDefault();
             result.User = (User)_context.Users.Where(user => user.Id == result.UserId).FirstOrDefault();
             result.Job = (Job)_context.Jobs.Where(job => job.Id == result.JobId).FirstOrDefault();
-            result.Interviews = _context.Interviews.Where(interview => interview.ApplicationId == result.Id).ToList();
             return result;
         }
-        public new bool Delete(Application entity)
+        public new bool Delete(Invite entity)
         {
             _context.Remove(entity);
             return true;
         }
-        public new bool Update(Application entity)
+        public new bool Update(Invite entity)
         {
             _context.Update(entity);
             _table.Update(entity);

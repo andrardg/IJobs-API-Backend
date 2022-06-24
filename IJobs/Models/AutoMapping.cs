@@ -39,6 +39,9 @@ namespace IJobs.Models
 
             CreateMap<Interview, InterviewDTO>();
             CreateMap<InterviewDTO, Interview>();
+
+            CreateMap<Invite, InviteDTO>();
+            CreateMap<InviteDTO, Invite>();
         }
     }
 }
