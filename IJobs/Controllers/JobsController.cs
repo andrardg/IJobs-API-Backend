@@ -33,6 +33,13 @@ namespace IJobs.Controllers
         {
             return _service.GetAllJobsWithCompany();
         }
+        [HttpGet]
+        [Route("GetAllWork")]
+        [AllowAnonymous]
+        public IEnumerable<JobDTO> GetWork()
+        {
+            return _service.GetAllWorkWithCompany();
+        }
 
         // GET api/<JobsController>/5
         [HttpGet("{id}")]

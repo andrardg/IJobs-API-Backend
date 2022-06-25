@@ -29,6 +29,12 @@ namespace IJobs.Services
             job.Id = Guid.NewGuid();
             job.DateCreated = DateTime.UtcNow;
             job.DateModified = DateTime.UtcNow;
+            if (job.UserId == Guid.Empty)
+                job.UserId = null;
+            else if (job.CompanyId == Guid.Empty)
+                job.CompanyId = null;
+            else
+                throw new System.Exception("Job cannot be owned by both a company and a user.");
             _jobRepository.Create(job);
             Save();
         }
@@ -57,9 +63,20 @@ namespace IJobs.Services
             }
             return dtos;
         }
-            public IEnumerable<JobDTO> GetAllJobsWithCompany()
+        public IEnumerable<JobDTO> GetAllJobsWithCompany()
         {
-            var results = _jobRepository.GetAllWithJoin();
+            var results = _jobRepository.GetAllJobsWithJoin();
+            var dtos = new List<JobDTO>();
+            foreach (var result in results)
+            {
+                var response = _mapper.Map<JobDTO>(result);
+                dtos.Add(response);
+            }
+            return dtos;
+        }
+        public IEnumerable<JobDTO> GetAllWorkWithCompany()
+        {
+            var results = _jobRepository.GetAllWorkWithJoin();
             var dtos = new List<JobDTO>();
             foreach (var result in results)
             {
@@ -107,6 +124,12 @@ namespace IJobs.Services
         public void Update(JobDTO model)
         {
             var job = _mapper.Map<Job>(model);
+            if (job.UserId == Guid.Empty)
+                job.UserId = null;
+            else if (job.CompanyId == Guid.Empty)
+                job.CompanyId = null;
+            else
+                throw new System.Exception("Job cannot be owned by both a company and a user.");
             job.DateModified = DateTime.UtcNow;
             _jobRepository.Update(job);
         }

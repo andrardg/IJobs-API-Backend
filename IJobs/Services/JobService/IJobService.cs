@@ -11,6 +11,7 @@ namespace IJobs.Services
         //get all
         IEnumerable<JobDTO> GetAllJobs();
         IEnumerable<JobDTO> GetAllJobsWithCompany();
+        IEnumerable<JobDTO> GetAllWorkWithCompany();
         //get by name
         IEnumerable<JobDTO> GetByJobTitle(string title);
         IEnumerable<JobDTO> GetByJobTitleWithCompany(string title);

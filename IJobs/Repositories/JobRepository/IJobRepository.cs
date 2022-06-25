@@ -11,7 +11,8 @@ namespace IJobs.Repositories.JobRepository
     {
         Job GetByIdWithJoin(Guid? id);
         List<Job> GetAll();
-        List<Job> GetAllWithJoin();
+        List<Job> GetAllJobsWithJoin();
+        List<Job> GetAllWorkWithJoin();
         List<Job> GetByJobTitle(string JobTitle);
         List<Job> GetByJobTitleWithCompany(string JobTitle);
         List<Job> GetBySalary(int Salary);

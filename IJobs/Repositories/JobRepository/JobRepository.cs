@@ -47,12 +47,13 @@ namespace IJobs.Repositories.JobRepository
         {
             return _table.ToList();
         }
-        public List<Job> GetAllWithJoin()
+        public List<Job> GetAllJobsWithJoin()
         {
             var result = from job in _table
                           join company in _context.Companies on job.CompanyId equals company.Id
                           join subdomain  in _context.Subdomains on job.SubdomainId equals subdomain.Id
-                          select new Job
+                          where job.CompanyId != null
+                         select new Job
                           {
                               Id = job.Id,
                               JobTitle = job.JobTitle,
@@ -65,10 +66,31 @@ namespace IJobs.Repositories.JobRepository
                               CompanyId = job.CompanyId,
                               Company = company,
                               SubdomainId = job.SubdomainId,
-                              Subdomain = subdomain,
-                              UserId = job.UserId,
-                              User = job.User
+                              Subdomain = subdomain
                           };
+            return result.ToList();
+        }
+        public List<Job> GetAllWorkWithJoin()
+        {
+            var result = from job in _table
+                         join user in _context.Users on job.UserId equals user.Id
+                         join subdomain in _context.Subdomains on job.SubdomainId equals subdomain.Id
+                         where job.UserId != null
+                         select new Job
+                         {
+                             Id = job.Id,
+                             JobTitle = job.JobTitle,
+                             Description = job.Description,
+                             Salary = job.Salary,
+                             JobType = job.JobType,
+                             Experience = job.Experience,
+                             Address = job.Address,
+                             Open = job.Open,
+                             UserId = job.UserId,
+                             User = user,
+                             SubdomainId = job.SubdomainId,
+                             Subdomain = subdomain
+                         };
             return result.ToList();
         }
         public List<Job> GetByJobTitle(string JobTitle)
