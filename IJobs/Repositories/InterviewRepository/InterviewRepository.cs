@@ -43,22 +43,14 @@ namespace IJobs.Repositories.InterviewRepository
                                      Experience = job.Experience,
                                      Address = job.Address,
                                      Open = job.Open,
+                                     WorkType = job.WorkType,
                                      CompanyId = job.CompanyId,
-                                     Company = (from company in _context.Companies
-                                                where company.Id == job2.CompanyId
-                                                select new Company
-                                                {
-                                                    Name = company.Name,
-                                                    Email = company.Email,
-                                                    PasswordHash = company.PasswordHash,
-                                                    Address = company.Address,
-                                                    Description = company.Description,
-                                                    Role = company.Role,
-                                                    verifiedAccount = company.verifiedAccount,
-                                                    Id = company.Id
-                                                }).FirstOrDefault(),
-                                    SubdomainId = job.SubdomainId
-                                 }).FirstOrDefault(),
+                                     Company = ((Company)(from comp in _context.Companies where job.CompanyId == comp.Id select comp).FirstOrDefault()),
+                                     SubdomainId = job.SubdomainId,
+                                     Subdomain = ((Subdomain)(from subd in _context.Subdomains where job.SubdomainId == subd.Id select subd).FirstOrDefault()),
+                                     UserId = job.UserId,
+                                     User = ((User)(from user in _context.Users where job.UserId == user.Id select user).FirstOrDefault()),
+                                 }).FirstOrDefault(), 
                                  UserId = app.UserId,
                                  User = user,
                                  CV = app.CV,

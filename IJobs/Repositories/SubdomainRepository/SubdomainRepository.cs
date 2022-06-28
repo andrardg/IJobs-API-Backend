@@ -47,17 +47,6 @@ namespace IJobs.Repositories.SubdomainRepository
             subd.Jobs = (ICollection<Job>)(from job in _context.Jobs
                                                 where job.SubdomainId == id
                                                 select job);
-            /*var result = from subd in _table
-                         join tut in _context.Tutorials on subd.Id equals tut.SubdomainId
-                         where subd.Id == id
-                         select new Subdomain
-                         {
-                             Name = subd.Name,
-                             DomainId = subd.DomainId,
-                             Domain = ((Domain)(from dom in _context.Domains where dom.Id == subd.DomainId select dom)),
-                             Tutorials = ((ICollection<Tutorial>)(from tut in _context.Tutorials where tut.SubdomainId == subd.Id select tut)),
-                             Jobs = ((ICollection<Job>)(from job in _context.Jobs where job.SubdomainId == subd.Id select job))
-                         };*/
             return subd;
         }
         public new bool Delete(Subdomain entity)

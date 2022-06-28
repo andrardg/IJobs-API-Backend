@@ -21,6 +21,7 @@ namespace IJobs.Models.DTOs
         [Required]
         public string Address { get; set; }
         public bool Open { get; set; }
+        public bool WorkType { get; set; }
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
         public Company Company { get; set; }

@@ -41,6 +41,9 @@ namespace IJobs.Repositories.JobRepository
                                   verifiedAccount = company.verifiedAccount,
                                   Id = company.Id
                               }).FirstOrDefault();
+            result.User = (from user in _context.Users
+                              where user.Id == result.UserId
+                              select user).FirstOrDefault();
             return result;
         }
         public List<Job> GetAll()
@@ -52,8 +55,8 @@ namespace IJobs.Repositories.JobRepository
             var result = from job in _table
                           join company in _context.Companies on job.CompanyId equals company.Id
                           join subdomain  in _context.Subdomains on job.SubdomainId equals subdomain.Id
-                          where job.CompanyId != null
-                         select new Job
+                          where job.WorkType == false
+                          select new Job
                           {
                               Id = job.Id,
                               JobTitle = job.JobTitle,
@@ -63,6 +66,7 @@ namespace IJobs.Repositories.JobRepository
                               Experience = job.Experience,
                               Address = job.Address,
                               Open = job.Open,
+                              WorkType = job.WorkType,
                               CompanyId = job.CompanyId,
                               Company = company,
                               SubdomainId = job.SubdomainId,
@@ -73,9 +77,8 @@ namespace IJobs.Repositories.JobRepository
         public List<Job> GetAllWorkWithJoin()
         {
             var result = from job in _table
-                         join user in _context.Users on job.UserId equals user.Id
                          join subdomain in _context.Subdomains on job.SubdomainId equals subdomain.Id
-                         where job.UserId != null
+                         where job.WorkType == true
                          select new Job
                          {
                              Id = job.Id,
@@ -86,11 +89,15 @@ namespace IJobs.Repositories.JobRepository
                              Experience = job.Experience,
                              Address = job.Address,
                              Open = job.Open,
+                             WorkType = job.WorkType,
+                             CompanyId = job.CompanyId,
+                             Company = (Company)(from company in _context.Companies where job.CompanyId == company.Id select company).FirstOrDefault(),
                              UserId = job.UserId,
-                             User = user,
+                             User = (User)(from user in _context.Users where job.UserId == user.Id select user).FirstOrDefault(),
                              SubdomainId = job.SubdomainId,
                              Subdomain = subdomain
                          };
+
             return result.ToList();
         }
         public List<Job> GetByJobTitle(string JobTitle)
@@ -112,6 +119,7 @@ namespace IJobs.Repositories.JobRepository
                               JobType = job.JobType,
                               Experience = job.Experience,
                               Open = job.Open,
+                              WorkType = job.WorkType,
                               CompanyId = job.CompanyId,
                               Company = company,
                               SubdomainId = job.SubdomainId,

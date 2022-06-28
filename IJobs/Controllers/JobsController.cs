@@ -57,7 +57,7 @@ namespace IJobs.Controllers
         }
         // POST api/<JobsController>
         [HttpPost]
-        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company))]
+        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company) + ", " + nameof(Role.User))]
         public void Post([System.Web.Http.FromBody] JobDTO job)
         {
             _service.Create(job);
@@ -65,7 +65,7 @@ namespace IJobs.Controllers
 
         // PUT api/<JobsController>/5
         [HttpPut("{id}")]
-        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company))]
+        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company) + ", " + nameof(Role.User))]
         public void Put(Guid id, [System.Web.Http.FromBody] JobDTO job)
         {
             job.Id = id;
@@ -75,7 +75,7 @@ namespace IJobs.Controllers
 
         // DELETE api/<JobsController>/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company))]
+        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company) + ", " + nameof(Role.User))]
         public void Delete(Guid? id)
         {
             _service.Delete(id);

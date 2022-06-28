@@ -16,6 +16,7 @@ namespace IJobs.Models
         public string Experience { get; set; }
         public string Address { get; set; }
         public bool Open { get; set; }
+        public bool WorkType { get; set; } // 0=job 1=service
         public Company Company { get; set; }
         public Guid? CompanyId { get; set; }
         public User User { get; set; }
