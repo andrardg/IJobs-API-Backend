@@ -24,8 +24,7 @@ namespace IJobs.Models
         public Guid SubdomainId { get; set; }
         public Subdomain Subdomain { get; set; }
         public ICollection<Application> Applications { get; set; }
-
-
         public ICollection<Invite> Invites { get; set; }
+
     }
 }

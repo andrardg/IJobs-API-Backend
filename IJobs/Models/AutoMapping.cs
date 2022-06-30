@@ -42,6 +42,10 @@ namespace IJobs.Models
 
             CreateMap<Invite, InviteDTO>();
             CreateMap<InviteDTO, Invite>();
+
+
+            CreateMap<Contact, ContactDTO>();
+            CreateMap<ContactDTO, Contact>();
         }
     }
 }

@@ -41,7 +41,7 @@ namespace IJobs.Controllers
 
         // POST api/<InvitesController>
         [HttpPost]
-        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company))]
+        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company) + ", " + nameof(Role.User))]
         public void Post([FromBody] InviteDTO invite)
         {
             _service.Create(invite);

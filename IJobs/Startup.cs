@@ -2,6 +2,7 @@ using IJobs.Data;
 using IJobs.Models;
 using IJobs.Repositories.ApplicationRepository;
 using IJobs.Repositories.CompanyRepository;
+using IJobs.Repositories.ContactRepository;
 using IJobs.Repositories.DomainRepository;
 using IJobs.Repositories.InterviewRepository;
 using IJobs.Repositories.InviteRepository;
@@ -11,6 +12,7 @@ using IJobs.Repositories.TutorialRepository;
 using IJobs.Repositories.UserRepository;
 using IJobs.Services;
 using IJobs.Services.ApplicationService;
+using IJobs.Services.ContactService;
 using IJobs.Services.DomainService;
 using IJobs.Services.InterviewService;
 using IJobs.Services.InviteService;
@@ -123,6 +125,7 @@ namespace IJobs
             services.AddScoped<IApplicationRepository, ApplicationRepository>();
             services.AddScoped<IInterviewRepository, InterviewRepository>();
             services.AddScoped<IInviteRepository, InviteRepository>();
+            services.AddScoped<IContactRepository, ContactRepository>();
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICompanyService, CompanyService>();
@@ -133,6 +136,7 @@ namespace IJobs
             services.AddScoped<IApplicationService, ApplicationService>();
             services.AddScoped<IInterviewService, InterviewService>();
             services.AddScoped<IInviteService, InviteService>();
+            services.AddScoped<IContactService, ContactService>();
 
             services.AddScoped<IJWTUtils<User>, JWTUtils<User>>();
             services.AddScoped<IJWTUtils<Company>, JWTUtils<Company>>();

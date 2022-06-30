@@ -19,6 +19,7 @@ namespace IJobs.Data
         public DbSet<Application> Applications { get; set; }
         public DbSet<Interview> Interviews { get; set; }
         public DbSet<Invite> Invites { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
         public projectContext(DbContextOptions<projectContext> options) : base(options)
         {
 
@@ -60,6 +61,10 @@ namespace IJobs.Data
             modelBuilder.Entity<Interview>().Property(x => x.Location).IsRequired();
             modelBuilder.Entity<Interview>().Property(x => x.ResponseUser).IsRequired();
             modelBuilder.Entity<Interview>().Property(x => x.ResponseCompany).IsRequired();
+
+            modelBuilder.Entity<Contact>().Property(x => x.Title).IsRequired();
+            modelBuilder.Entity<Contact>().Property(x => x.Message).IsRequired();
+            modelBuilder.Entity<Contact>().Property(x => x.Email).IsRequired();
 
             //one to many
             modelBuilder.Entity<Company>()
