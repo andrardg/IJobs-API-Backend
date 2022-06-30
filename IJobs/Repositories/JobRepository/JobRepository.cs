@@ -27,6 +27,7 @@ namespace IJobs.Repositories.JobRepository
                                     Id = subd.Id,
                                     Name = subd.Name,
                                     DomainId = subd.DomainId,
+                                    Domain = (Domain)(from domain in _context.Domains where domain.Id == subd.DomainId select domain).FirstOrDefault()
                                 }).FirstOrDefault();
             result.Company = (from company in _context.Companies where company.Id == result.CompanyId
                               select new Company

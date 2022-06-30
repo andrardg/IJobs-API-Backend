@@ -100,7 +100,7 @@ namespace IJobs.Services
         }
         public UserResponseDTO GetById(Guid? id)
         {
-            var user = _userRepository.GetById(id);
+            var user = _userRepository.GetByIdJoin(id);
             if (user == null) 
                 throw new KeyNotFoundException("User not found");
             var response = _mapper.Map<UserResponseDTO>(user);

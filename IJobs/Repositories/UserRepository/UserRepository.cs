@@ -54,27 +54,27 @@ namespace IJobs.Repositories.UserRepository
                                  Role = user.Role,
                                  Applications = ((ICollection<Application>)(from a in _context.Applications
                                                 where a.UserId == user.Id
-                                                select a)),
+                                                select a).ToList()),
                                  Invites = ((ICollection<Invite>)(from a in _context.Invites
                                                 where a.UserId == user.Id
-                                                select a)),
+                                                select a).ToList()),
                                  Jobs = ((ICollection<Job>)(from a in _context.Jobs
                                                 where a.UserId == user.Id
-                                                select a)),
+                                                select a).ToList()),
                          };            return result.ToList();
         }
-        public User GetByIdJoin(Guid id)
+        public User GetByIdJoin(Guid? id)
         {
             var result = _table.Where(x => x.Id == id).FirstOrDefault();
             result.Applications = ((ICollection<Application>)(from a in _context.Applications
                                                               where a.UserId == result.Id
-                                                              select a));
+                                                              select a).ToList());
             result.Invites = ((ICollection<Invite>)(from a in _context.Invites
                                                     where a.UserId == result.Id
-                                                    select a));
+                                                    select a).ToList());
             result.Jobs = ((ICollection<Job>)(from a in _context.Jobs
                                               where a.UserId == result.Id
-                                              select a));
+                                              select a).ToList());
             return result;
         }
         public new bool Delete(User entity)
