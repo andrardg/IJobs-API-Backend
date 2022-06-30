@@ -108,7 +108,6 @@ namespace IJobs.Repositories.JobRepository
         }
         public List<Job> GetByJobTitleWithCompany(string JobTitle){
             var result = from job in _table
-                         join company in _context.Companies on job.CompanyId equals company.Id
                          join subdomain in _context.Subdomains on job.SubdomainId equals subdomain.Id
                          where job.JobTitle.ToLower().Contains(JobTitle.ToLower())
                           select new Job
@@ -122,11 +121,11 @@ namespace IJobs.Repositories.JobRepository
                               Open = job.Open,
                               WorkType = job.WorkType,
                               CompanyId = job.CompanyId,
-                              Company = company,
+                              Company = (Company)(from company in _context.Companies where job.CompanyId == company.Id select company).FirstOrDefault(),
                               SubdomainId = job.SubdomainId,
                               Subdomain = subdomain,
                               UserId = job.UserId,
-                              User = job.User
+                              User = (User)(from user in _context.Users where job.UserId == user.Id select user).FirstOrDefault(),
                           };
             return result.ToList();
         }

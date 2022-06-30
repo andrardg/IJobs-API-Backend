@@ -40,7 +40,7 @@ namespace IJobs.Controllers
 
         // POST api/<InterviewController>
         [HttpPost]
-        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company))]
+        [Authorize(Roles = nameof(Role.Admin) + ", " + nameof(Role.Company) + ", " + nameof(Role.User))]
         public void Post([FromBody] InterviewDTO interview)
         {
             _service.Create(interview);
